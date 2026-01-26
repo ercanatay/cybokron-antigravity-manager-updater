@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Terminal'de script'i çalıştır
+SCRIPT_DIR="$(dirname "$0")"
+UPDATER_SCRIPT="$SCRIPT_DIR/../Resources/antigravity-update.sh"
+
+# Terminal'i aç ve script'i çalıştır
+osascript -e "tell application \"Terminal\"
+    activate
+    do script \"'$UPDATER_SCRIPT'\"
+end tell"

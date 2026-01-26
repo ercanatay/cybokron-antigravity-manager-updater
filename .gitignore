@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Thumbnails
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Archives (keep original zip if needed)
+# *.zip
+
+# Build artifacts
+*.dmg
+build/
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# User preferences (language stored in home dir, not repo)
+.antigravity_updater_lang
+GUVENLIK_CONFIG.txt
+KURULUM*.txt
+TEST_RAPORU.txt
+test_summary.txt
