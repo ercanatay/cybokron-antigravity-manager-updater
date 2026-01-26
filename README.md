@@ -3,34 +3,43 @@
 A lightweight, multi-language macOS application that automatically updates [Antigravity Tools](https://github.com/lbjlaq/Antigravity-Manager) to the latest version with a single click.
 
 ![Platform](https://img.shields.io/badge/platform-macOS-blue)
-![Languages](https://img.shields.io/badge/languages-21-green)
+![Languages](https://img.shields.io/badge/languages-51-green)
 ![License](https://img.shields.io/badge/license-MIT-brightgreen)
 ![Architecture](https://img.shields.io/badge/arch-Apple%20Silicon%20%7C%20Intel-orange)
 
 ## Features
 
 - **One-Click Update**: Automatically downloads and installs the latest version
-- **Multi-Language Support**: 21 languages with automatic system language detection
+- **Multi-Language Support**: 51 languages with automatic system language detection
 - **Universal Binary**: Supports both Apple Silicon (M1/M2/M3) and Intel Macs
 - **Smart Detection**: Compares installed version with latest GitHub release
 - **Safe Installation**: Removes macOS quarantine flags automatically
 - **Persistent Preferences**: Remembers your language choice
 
-## Supported Languages
+## Supported Languages (51)
 
-| Language | Code | Language | Code |
-|----------|------|----------|------|
-| English | `en` | Nederlands | `nl` |
-| Türkçe | `tr` | Polski | `pl` |
-| Deutsch | `de` | Svenska | `sv` |
-| Français | `fr` | Norsk | `no` |
-| Español | `es` | Dansk | `da` |
-| Italiano | `it` | Suomi | `fi` |
-| Português | `pt` | Українська | `uk` |
-| Русский | `ru` | Čeština | `cs` |
-| 简体中文 | `zh` | हिन्दी | `hi` |
-| 日本語 | `ja` | العربية | `ar` |
-| 한국어 | `ko` | | |
+| Language | Code | Language | Code | Language | Code |
+|----------|------|----------|------|----------|------|
+| English | `en` | Magyar | `hu` | Galego | `gl` |
+| Türkçe | `tr` | Română | `ro` | Íslenska | `is` |
+| Deutsch | `de` | Български | `bg` | فارسی | `fa` |
+| Français | `fr` | Hrvatski | `hr` | Kiswahili | `sw` |
+| Español | `es` | Srpski | `sr` | Afrikaans | `af` |
+| Italiano | `it` | Slovenčina | `sk` | Filipino | `fil` |
+| Português | `pt` | Slovenščina | `sl` | বাংলা | `bn` |
+| Русский | `ru` | Lietuvių | `lt` | தமிழ் | `ta` |
+| 简体中文 | `zh` | Latviešu | `lv` | اردو | `ur` |
+| 繁體中文 | `zh-TW` | Eesti | `et` | Te Reo Māori | `mi` |
+| 日本語 | `ja` | Català | `ca` | Cymraeg | `cy` |
+| 한국어 | `ko` | Euskara | `eu` | | |
+| العربية | `ar` | Ελληνικά | `el` | | |
+| Nederlands | `nl` | עברית | `he` | | |
+| Polski | `pl` | ไทย | `th` | | |
+| Svenska | `sv` | Tiếng Việt | `vi` | | |
+| Norsk | `no` | Bahasa Indonesia | `id` | | |
+| Dansk | `da` | Bahasa Melayu | `ms` | | |
+| Suomi | `fi` | हिन्दी | `hi` | | |
+| Українська | `uk` | Čeština | `cs` | | |
 
 ## Installation
 

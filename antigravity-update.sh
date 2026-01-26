@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Antigravity Tools Updater - Multi-Language Version
-# Supports 20 languages with automatic system language detection
+# Supports 51 languages with automatic system language detection
 
 set -e
 
@@ -30,9 +30,9 @@ if [[ "$SCRIPT_DIR" == *".app/Contents/Resources"* ]]; then
     LOCALES_DIR="$SCRIPT_DIR/locales"
 fi
 
-# Available languages
-declare -a LANG_CODES=("tr" "en" "de" "fr" "es" "it" "pt" "ru" "zh" "ja" "ko" "ar" "nl" "pl" "sv" "no" "da" "fi" "uk" "cs" "hi")
-declare -a LANG_NAMES=("Türkçe" "English" "Deutsch" "Français" "Español" "Italiano" "Português" "Русский" "简体中文" "日本語" "한국어" "العربية" "Nederlands" "Polski" "Svenska" "Norsk" "Dansk" "Suomi" "Українська" "Čeština" "हिन्दी")
+# Available languages (51 total)
+declare -a LANG_CODES=("en" "tr" "de" "fr" "es" "it" "pt" "ru" "zh" "zh-TW" "ja" "ko" "ar" "nl" "pl" "sv" "no" "da" "fi" "uk" "cs" "hi" "el" "he" "th" "vi" "id" "ms" "hu" "ro" "bg" "hr" "sr" "sk" "sl" "lt" "lv" "et" "ca" "eu" "gl" "is" "fa" "sw" "af" "fil" "bn" "ta" "ur" "mi" "cy")
+declare -a LANG_NAMES=("English" "Türkçe" "Deutsch" "Français" "Español" "Italiano" "Português" "Русский" "简体中文" "繁體中文" "日本語" "한국어" "العربية" "Nederlands" "Polski" "Svenska" "Norsk" "Dansk" "Suomi" "Українська" "Čeština" "हिन्दी" "Ελληνικά" "עברית" "ไทย" "Tiếng Việt" "Bahasa Indonesia" "Bahasa Melayu" "Magyar" "Română" "Български" "Hrvatski" "Srpski" "Slovenčina" "Slovenščina" "Lietuvių" "Latviešu" "Eesti" "Català" "Euskara" "Galego" "Íslenska" "فارسی" "Kiswahili" "Afrikaans" "Filipino" "বাংলা" "தமிழ்" "اردو" "Te Reo Māori" "Cymraeg")
 
 # Language preference file
 LANG_PREF_FILE="$HOME/.antigravity_updater_lang"

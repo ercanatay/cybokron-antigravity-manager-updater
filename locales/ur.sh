@@ -1,0 +1,34 @@
+# Urdu (اردو)
+LANG_NAME="اردو"
+LANG_CODE="ur"
+
+MSG_TITLE="🚀 Antigravity Tools اپڈیٹر"
+MSG_CHECKING_VERSION="📦 موجودہ ورژن چیک ہو رہا ہے..."
+MSG_CURRENT="موجودہ"
+MSG_NOT_INSTALLED="انسٹال نہیں ہے"
+MSG_UNKNOWN="نامعلوم"
+MSG_CHECKING_LATEST="🌐 تازہ ترین ورژن چیک ہو رہا ہے..."
+MSG_LATEST="تازہ ترین"
+MSG_ARCH="فن تعمیر"
+MSG_ALREADY_LATEST="✅ آپ کے پاس پہلے سے تازہ ترین ورژن ہے!"
+MSG_NEW_VERSION="📥 نیا ورژن دستیاب ہے! ڈاؤن لوڈ شروع ہو رہا ہے..."
+MSG_DOWNLOADING="⬇️  DMG ڈاؤن لوڈ ہو رہا ہے..."
+MSG_DOWNLOAD_FAILED="❌ ڈاؤن لوڈ ناکام!"
+MSG_DOWNLOAD_COMPLETE="✅ ڈاؤن لوڈ مکمل"
+MSG_MOUNTING="💿 DMG ماؤنٹ ہو رہا ہے..."
+MSG_MOUNT_FAILED="❌ DMG ماؤنٹ نہیں ہو سکا"
+MSG_MOUNTED="✅ DMG ماؤنٹ ہو گیا"
+MSG_CLOSING_APP="🔄 موجودہ ایپلیکیشن بند ہو رہی ہے..."
+MSG_REMOVING_OLD="🗑️  پرانا ورژن ہٹایا جا رہا ہے..."
+MSG_COPYING_NEW="📁 نیا ورژن کاپی ہو رہا ہے..."
+MSG_APP_NOT_FOUND="❌ DMG میں ایپلیکیشن نہیں ملی"
+MSG_COPIED="✅ ایپلیکیشن کاپی ہو گئی"
+MSG_REMOVING_QUARANTINE="🔓 قرنطینہ ہٹایا جا رہا ہے (xattr -cr)..."
+MSG_QUARANTINE_REMOVED="✅ قرنطینہ ہٹا دیا گیا"
+MSG_UNMOUNTING="💿 DMG ان ماؤنٹ ہو رہا ہے..."
+MSG_UPDATE_SUCCESS="✅ اپڈیٹ کامیابی سے مکمل!"
+MSG_OLD_VERSION="پرانا ورژن"
+MSG_NEW_VERSION_LABEL="نیا ورژن"
+MSG_API_ERROR="❌ GitHub API تک رسائی نہیں ہو سکتی"
+MSG_SELECT_LANGUAGE="زبان منتخب کریں"
+MSG_OPENING_APP="🚀 ایپلیکیشن کھل رہی ہے..."
