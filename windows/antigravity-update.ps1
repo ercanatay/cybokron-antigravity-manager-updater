@@ -12,7 +12,8 @@ param(
     [switch]$Rollback,
     [switch]$Silent,
     [switch]$NoBackup,
-    [string]$ProxyUrl = ""
+    [string]$ProxyUrl = "",
+    [switch]$Help
 )
 
 # Ensure UTF-8 output
@@ -576,11 +577,41 @@ function Invoke-Download {
 
 #endregion
 
+#region Help Function
+
+function Show-Help {
+    Write-Host ""
+    Write-Host "Antigravity Tools Updater v$UPDATER_VERSION" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Usage: .\antigravity-update.ps1 [OPTIONS]"
+    Write-Host ""
+    Write-Host "Options:"
+    Write-Host "  -Lang              Change language"
+    Write-Host "  -ResetLang         Reset language preference"
+    Write-Host "  -SetLang <code>    Set specific language (e.g., tr, en, de)"
+    Write-Host "  -CheckOnly         Check for updates only (no install)"
+    Write-Host "  -ShowChangelog     Show changelog before update"
+    Write-Host "  -Rollback          Rollback to previous version"
+    Write-Host "  -Silent            Run without prompts"
+    Write-Host "  -NoBackup          Skip automatic backup"
+    Write-Host "  -ProxyUrl <url>    Use proxy for connections"
+    Write-Host "  -Help              Show this help"
+    Write-Host ""
+}
+
+#endregion
+
 #region Main Execution
 
 # Initialize
 Initialize-Logging
 Write-Log "=== Updater started v$UPDATER_VERSION ===" "INFO"
+
+# Handle help
+if ($Help) {
+    Show-Help
+    exit 0
+}
 
 # Handle rollback
 if ($Rollback) {

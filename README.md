@@ -281,7 +281,7 @@ Ensure you have a backup available. Backups are created automatically before eac
 | Changelog | `--changelog` | `-ShowChangelog` |
 | No Backup | `--no-backup` | `-NoBackup` |
 | Proxy Support | `--proxy` | `-ProxyUrl` |
-| Help | `--help` | - |
+| Help | `--help` | `-Help` |
 
 #### 🔧 Improvements
 - More precise process termination (exact name matching)
