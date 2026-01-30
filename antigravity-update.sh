@@ -50,6 +50,7 @@ SHOW_CHANGELOG=false
 ROLLBACK=false
 SILENT=false
 NO_BACKUP=false
+PROXY_URL=""
 
 # Available languages (51 total)
 declare -a LANG_CODES=("en" "tr" "de" "fr" "es" "it" "pt" "ru" "zh" "zh-TW" "ja" "ko" "ar" "nl" "pl" "sv" "no" "da" "fi" "uk" "cs" "hi" "el" "he" "th" "vi" "id" "ms" "hu" "ro" "bg" "hr" "sr" "sk" "sl" "lt" "lv" "et" "ca" "eu" "gl" "is" "fa" "sw" "af" "fil" "bn" "ta" "ur" "mi" "cy")
@@ -462,6 +463,7 @@ print_usage() {
     echo "  --rollback          Rollback to previous version"
     echo "  --silent            Run without prompts"
     echo "  --no-backup         Skip automatic backup"
+    echo "  --proxy URL         Use proxy for connections"
     echo "  --help, -h          Show this help"
     echo ""
 }
@@ -505,6 +507,10 @@ while [[ $# -gt 0 ]]; do
         --no-backup)
             NO_BACKUP=true
             shift
+            ;;
+        --proxy)
+            PROXY_URL="$2"
+            shift 2
             ;;
         --help|-h)
             print_usage
@@ -583,7 +589,14 @@ if [[ "$SILENT" != true ]]; then
     echo -e "${BLUE}$MSG_CHECKING_LATEST${NC}"
 fi
 
-RELEASE_INFO=$(curl -s -A "AntigravityUpdater/$UPDATER_VERSION" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
+# Build curl command with optional proxy
+CURL_OPTS="-s -A \"AntigravityUpdater/$UPDATER_VERSION\""
+if [[ -n "$PROXY_URL" ]]; then
+    CURL_OPTS="$CURL_OPTS --proxy \"$PROXY_URL\""
+    write_log "INFO" "Using proxy: $PROXY_URL"
+fi
+
+RELEASE_INFO=$(eval curl $CURL_OPTS "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
 
 if [[ -z "$RELEASE_INFO" ]] || [[ "$RELEASE_INFO" == *"rate limit"* ]]; then
     if [[ "$SILENT" != true ]]; then
@@ -664,7 +677,13 @@ if [[ "$SILENT" != true ]]; then
 fi
 write_log "INFO" "Download URL: $DOWNLOAD_URL"
 
-if ! curl -L --progress-bar -o "$DMG_PATH" "$DOWNLOAD_URL"; then
+# Build download command with optional proxy
+DOWNLOAD_OPTS="-L --progress-bar -o \"$DMG_PATH\""
+if [[ -n "$PROXY_URL" ]]; then
+    DOWNLOAD_OPTS="$DOWNLOAD_OPTS --proxy \"$PROXY_URL\""
+fi
+
+if ! eval curl $DOWNLOAD_OPTS "\"$DOWNLOAD_URL\""; then
     if [[ "$SILENT" != true ]]; then
         echo -e "${RED}$MSG_DOWNLOAD_FAILED${NC}"
     fi

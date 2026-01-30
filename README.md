@@ -39,7 +39,7 @@ A lightweight, multi-language, cross-platform application that automatically upd
 - **Check-Only Mode**: Check for updates without installing
 - **Silent Mode**: Run without prompts (for automation/scripts)
 - **Changelog Display**: View release notes before updating
-- **Proxy Support** (Windows): Corporate network compatibility
+- **Proxy Support**: Corporate network compatibility
 
 ## 🌍 Supported Languages (51)
 
@@ -128,6 +128,9 @@ On first launch, select your preferred language. The updater remembers your choi
 
 # Skip automatic backup
 ./antigravity-update.sh --no-backup
+
+# Use with corporate proxy
+./antigravity-update.sh --proxy "http://proxy.company.com:8080"
 
 # Show help
 ./antigravity-update.sh --help
@@ -277,8 +280,8 @@ Ensure you have a backup available. Backups are created automatically before eac
 | Silent Mode | `--silent` | `-Silent` |
 | Changelog | `--changelog` | `-ShowChangelog` |
 | No Backup | `--no-backup` | `-NoBackup` |
+| Proxy Support | `--proxy` | `-ProxyUrl` |
 | Help | `--help` | - |
-| Proxy Support | - | `-ProxyUrl` |
 
 #### 🔧 Improvements
 - More precise process termination (exact name matching)
