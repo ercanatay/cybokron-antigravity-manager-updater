@@ -17,12 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added - New Features
 - **Backup System**: Automatic backup before updates (keeps last 3 backups)
-- **Rollback**: `-Rollback` flag to restore previous version
-- **Check-Only Mode**: `-CheckOnly` flag to check for updates without installing
-- **Silent Mode**: `-Silent` flag for automated/scripted updates
-- **Changelog Display**: `-ShowChangelog` flag to view release notes
-- **Proxy Support**: `-ProxyUrl` parameter for corporate network environments
-- **No Backup Option**: `-NoBackup` flag to skip backup creation
+- **Rollback**: `--rollback` (macOS) / `-Rollback` (Windows) to restore previous version
+- **Check-Only Mode**: `--check-only` (macOS) / `-CheckOnly` (Windows) to check without installing
+- **Silent Mode**: `--silent` (macOS) / `-Silent` (Windows) for automated/scripted updates
+- **Changelog Display**: `--changelog` (macOS) / `-ShowChangelog` (Windows) to view release notes
+- **Proxy Support**: `--proxy` (macOS) / `-ProxyUrl` (Windows) for corporate network environments
+- **No Backup Option**: `--no-backup` (macOS) / `-NoBackup` (Windows) to skip backup creation
 
 ### Changed
 - Improved process termination with more precise matching
