@@ -1,24 +1,47 @@
 # Antigravity Tools Updater
 
-A lightweight, multi-language application that automatically updates [Antigravity Tools](https://github.com/lbjlaq/Antigravity-Manager) to the latest version with a single click.
+A lightweight, multi-language, cross-platform application that automatically updates [Antigravity Tools](https://github.com/lbjlaq/Antigravity-Manager) to the latest version with a single click.
 
 ![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-blue)
-![Languages](https://img.shields.io/badge/languages-51-green)
+![Version](https://img.shields.io/badge/version-1.2.0-green)
+![Languages](https://img.shields.io/badge/languages-51-orange)
 ![License](https://img.shields.io/badge/license-MIT-brightgreen)
-![Architecture](https://img.shields.io/badge/arch-Apple%20Silicon%20%7C%20Intel%20%7C%20x64-orange)
+![Security](https://img.shields.io/badge/security-enhanced-purple)
 
-## Features
+## ✨ Features
 
+### Core Features
 - **One-Click Update**: Automatically downloads and installs the latest version
 - **Multi-Language Support**: 51 languages with automatic system language detection
-- **Cross-Platform**: Supports macOS and Windows
+- **Cross-Platform**: Supports macOS and Windows with feature parity
 - **Universal Binary (macOS)**: Supports both Apple Silicon (M1/M2/M3) and Intel Macs
 - **Windows 10/11 (64-bit)**: Full support including Bootcamp installations
-- **Smart Detection**: Compares installed version with latest GitHub release
-- **Safe Installation**: Removes macOS quarantine flags automatically
-- **Persistent Preferences**: Remembers your language choice
 
-## Supported Languages (51)
+### 🔒 Security Features (v1.2.0)
+- **Path Traversal Protection**: Locale files validated to prevent directory traversal attacks
+- **Language Code Validation**: Regex-based validation ensures only valid codes accepted
+- **Hash Verification**: SHA256 integrity checking for downloaded files
+- **Code Signature Check**: Verifies app signatures (codesign on macOS, Authenticode on Windows)
+- **Secure Temp Directory**: Random suffix prevents prediction attacks
+- **TLS 1.2 Enforced**: All connections use secure protocols
+
+### 💾 Backup & Recovery (v1.2.0)
+- **Automatic Backup**: Creates backup before each update
+- **Rollback Support**: One-click restore to previous version
+- **Backup Rotation**: Keeps last 3 backups automatically
+
+### 📝 Logging (v1.2.0)
+- **Comprehensive Logging**: All operations logged with timestamps
+- **Log Rotation**: Automatic rotation when file exceeds 1MB
+- **Debug Support**: Full operation history for troubleshooting
+
+### 🛠️ Advanced Options (v1.2.0)
+- **Check-Only Mode**: Check for updates without installing
+- **Silent Mode**: Run without prompts (for automation/scripts)
+- **Changelog Display**: View release notes before updating
+- **Proxy Support** (Windows): Corporate network compatibility
+
+## 🌍 Supported Languages (51)
 
 | Language | Code | Language | Code | Language | Code |
 |----------|------|----------|------|----------|------|
@@ -33,28 +56,24 @@ A lightweight, multi-language application that automatically updates [Antigravit
 | 简体中文 | `zh` | Latviešu | `lv` | اردو | `ur` |
 | 繁體中文 | `zh-TW` | Eesti | `et` | Te Reo Māori | `mi` |
 | 日本語 | `ja` | Català | `ca` | Cymraeg | `cy` |
-| 한국어 | `ko` | Euskara | `eu` | | |
-| العربية | `ar` | Ελληνικά | `el` | | |
-| Nederlands | `nl` | עברית | `he` | | |
-| Polski | `pl` | ไทย | `th` | | |
+| 한국어 | `ko` | Euskara | `eu` | Suomi | `fi` |
+| العربية | `ar` | Ελληνικά | `el` | Українська | `uk` |
+| Nederlands | `nl` | עברית | `he` | Čeština | `cs` |
+| Polski | `pl` | ไทย | `th` | हिन्दी | `hi` |
 | Svenska | `sv` | Tiếng Việt | `vi` | | |
 | Norsk | `no` | Bahasa Indonesia | `id` | | |
 | Dansk | `da` | Bahasa Melayu | `ms` | | |
-| Suomi | `fi` | हिन्दी | `hi` | | |
-| Українська | `uk` | Čeština | `cs` | | |
 
-## Installation
+## 📥 Installation
 
 ### macOS
 
 #### Option 1: Download Release (Recommended)
-
 1. Download the latest `Antigravity.Updater.zip` from [Releases](../../releases)
 2. Extract and move `Antigravity Updater.app` to your Applications folder
 3. Double-click to run
 
 #### Option 2: Run Script Directly
-
 ```bash
 git clone https://github.com/ercanatay/AntigravityUpdater.git
 cd AntigravityUpdater
@@ -64,109 +83,136 @@ chmod +x antigravity-update.sh
 
 ### Windows
 
-#### Option 1: Download Installer (Recommended)
-
-1. Download `AntigravityToolsUpdater_x.x.x_x64-setup.exe` from [Releases](../../releases)
-2. Run the installer
-3. Launch from Start Menu or Desktop shortcut
+#### Option 1: Download Portable (Recommended)
+1. Download `AntigravityToolsUpdater_1.2.0_x64-portable.zip` from [Releases](../../releases)
+2. Extract to any folder
+3. Run `AntigravityUpdater.bat`
 
 #### Option 2: Run Script Directly
-
 ```powershell
 git clone https://github.com/ercanatay/AntigravityUpdater.git
 cd AntigravityUpdater/windows
 .\AntigravityUpdater.bat
 ```
 
-Or via PowerShell:
+## 💻 Usage
 
-```powershell
-powershell -ExecutionPolicy Bypass -File antigravity-update.ps1
-```
+### Basic Usage
 
-## Usage
-
-### First Run
-On first launch, you'll see a language selection menu:
-
-```
-╔══════════════════════════════════════════════════════════╗
-║     🌍 Select Language / Dil Seçin / 选择语言            ║
-╚══════════════════════════════════════════════════════════╝
-
-   1) Türkçe        8) Русский      15) Svenska
-   2) English       9) 简体中文      16) Norsk
-   3) Deutsch      10) 日本語       17) Dansk
-   ...
-
-   0) Auto-detect / Otomatik
-
-➤
-```
-
-### Subsequent Runs
-The updater remembers your language preference and proceeds directly to update checking.
+On first launch, select your preferred language. The updater remembers your choice for future runs.
 
 ### Command Line Options
 
-**macOS:**
+#### macOS
 ```bash
+# Standard update (with automatic backup)
+./antigravity-update.sh
+
 # Change language
 ./antigravity-update.sh --lang
-./antigravity-update.sh -l
 
 # Reset language preference
 ./antigravity-update.sh --reset-lang
+
+# Check for updates only (no install)
+./antigravity-update.sh --check-only
+
+# Show changelog before update
+./antigravity-update.sh --changelog
+
+# Rollback to previous version
+./antigravity-update.sh --rollback
+
+# Silent mode (no prompts, for automation)
+./antigravity-update.sh --silent
+
+# Skip automatic backup
+./antigravity-update.sh --no-backup
+
+# Show help
+./antigravity-update.sh --help
 ```
 
-**Windows:**
+#### Windows
 ```powershell
+# Standard update (with automatic backup)
+.\antigravity-update.ps1
+
 # Change language
 .\antigravity-update.ps1 -Lang
 
 # Reset language preference
 .\antigravity-update.ps1 -ResetLang
 
-# Set specific language
-.\antigravity-update.ps1 -SetLang tr
+# Check for updates only (no install)
+.\antigravity-update.ps1 -CheckOnly
+
+# Show changelog before update
+.\antigravity-update.ps1 -ShowChangelog
+
+# Rollback to previous version
+.\antigravity-update.ps1 -Rollback
+
+# Silent mode (no prompts, for automation)
+.\antigravity-update.ps1 -Silent
+
+# Skip automatic backup
+.\antigravity-update.ps1 -NoBackup
+
+# Use with corporate proxy
+.\antigravity-update.ps1 -ProxyUrl "http://proxy.company.com:8080"
 ```
 
-## How It Works
+## 🔄 How It Works
 
-1. **Version Check**: Reads current installed version from app bundle/executable
-2. **GitHub API**: Fetches latest release information
-3. **Download**: Downloads appropriate package for your platform/architecture
-4. **Install**: Installs the application to the appropriate location
-5. **Cleanup**: Removes temporary files (and quarantine flags on macOS)
+```
+┌─────────────────────────────────────────────────────────────┐
+│  1. Version Check    │ Read installed version from app     │
+├─────────────────────────────────────────────────────────────┤
+│  2. GitHub API       │ Fetch latest release information    │
+├─────────────────────────────────────────────────────────────┤
+│  3. Backup           │ Create backup of current version    │
+├─────────────────────────────────────────────────────────────┤
+│  4. Download         │ Download appropriate package         │
+├─────────────────────────────────────────────────────────────┤
+│  5. Verify           │ Check hash and code signature       │
+├─────────────────────────────────────────────────────────────┤
+│  6. Install          │ Install to appropriate location     │
+├─────────────────────────────────────────────────────────────┤
+│  7. Cleanup          │ Remove temp files, quarantine flags │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 AntigravityUpdater/
 ├── Antigravity Updater.app/    # macOS application bundle
-├── antigravity-update.sh       # macOS updater script
-├── locales/                    # macOS language files
+├── antigravity-update.sh       # macOS updater script (v1.2.0)
+├── locales/                    # macOS language files (51)
 │   ├── en.sh
 │   ├── tr.sh
 │   └── ...
 ├── windows/                    # Windows version
-│   ├── antigravity-update.ps1  # Windows PowerShell script
+│   ├── antigravity-update.ps1  # Windows PowerShell script (v1.2.0)
 │   ├── AntigravityUpdater.bat  # Batch launcher
 │   ├── installer.iss           # Inno Setup installer script
-│   ├── locales/                # Windows language files
+│   ├── locales/                # Windows language files (51)
 │   │   ├── en.ps1
 │   │   ├── tr.ps1
 │   │   └── ...
 │   └── resources/
+├── releases/                   # Release packages
 ├── CHANGELOG.md
 ├── README.md
 └── LICENSE
 ```
 
-## Requirements
+## 📋 Requirements
 
 ### macOS
 - macOS 10.15 (Catalina) or later
+- Apple Silicon (M1/M2/M3) or Intel processor
 - Internet connection
 - `/Applications` write permission
 
@@ -176,30 +222,94 @@ AntigravityUpdater/
 - Internet connection
 - Works on Bootcamp Windows installations
 
-## Troubleshooting
+## 📝 Log Files
+
+| Platform | Location |
+|----------|----------|
+| **macOS** | `~/Library/Application Support/AntigravityUpdater/updater.log` |
+| **Windows** | `%APPDATA%\AntigravityUpdater\updater.log` |
+
+## 🔧 Troubleshooting
 
 ### macOS: "App is damaged and can't be opened"
-Run this command to remove quarantine:
 ```bash
 xattr -cr /path/to/Antigravity\ Updater.app
 ```
 
 ### macOS: Permission Denied
-Ensure the script is executable:
 ```bash
 chmod +x antigravity-update.sh
 ```
 
 ### Windows: PowerShell Execution Policy
-If you see an execution policy error, run:
 ```powershell
 powershell -ExecutionPolicy Bypass -File antigravity-update.ps1
 ```
 
 ### GitHub API Rate Limit
-If you see API errors, wait a few minutes and try again. GitHub limits unauthenticated requests.
+Wait a few minutes and try again. GitHub limits unauthenticated requests to 60/hour.
 
-## Contributing
+### Rollback Not Working
+Ensure you have a backup available. Backups are created automatically before each update unless `--no-backup` is used.
+
+---
+
+## 📜 Changelog
+
+### [1.2.0] - 2026-01-30 - Security Enhanced
+
+#### 🔒 Security Enhancements
+- **Path Traversal Protection**: Locale files validated to prevent directory traversal attacks
+- **Language Code Validation**: Regex-based validation (only `xx` or `xx-XX` format accepted)
+- **SHA256 Hash Verification**: Support for verifying downloaded file integrity
+- **Code Signature Check**:
+  - macOS: `codesign --verify --deep --strict`
+  - Windows: Authenticode signature validation
+- **Secure Temp Directory**: Random suffix added to temp path
+- **Comprehensive Logging**: Full operation logging with automatic rotation (max 1MB)
+
+#### 🆕 New Features
+| Feature | macOS | Windows |
+|---------|-------|---------|
+| Automatic Backup | ✅ | ✅ |
+| Rollback | `--rollback` | `-Rollback` |
+| Check-Only | `--check-only` | `-CheckOnly` |
+| Silent Mode | `--silent` | `-Silent` |
+| Changelog | `--changelog` | `-ShowChangelog` |
+| No Backup | `--no-backup` | `-NoBackup` |
+| Help | `--help` | - |
+| Proxy Support | - | `-ProxyUrl` |
+
+#### 🔧 Improvements
+- More precise process termination (exact name matching)
+- Better User-Agent header for GitHub API requests
+- Enhanced error handling and user feedback
+
+### [1.1.0] - 2026-01-30 - Windows Support
+
+#### Added
+- **Full Windows 10/11 64-bit support**
+  - PowerShell-based updater script
+  - Batch file launcher for easy execution
+  - Inno Setup installer script
+  - Works on Bootcamp Windows installations
+- Windows-specific locale files (51 languages)
+- Separate `windows/` directory structure
+
+### [1.0.0] - 2026-01-15 - Initial Release
+
+#### Added
+- macOS application bundle (.app)
+- 51 language support with automatic detection
+- Universal Binary support (Apple Silicon + Intel)
+- One-click update functionality
+- Persistent language preferences
+- Automatic quarantine flag removal
+- GitHub API integration
+
+---
+
+## 🤝 Contributing
 
 Contributions are welcome! To add a new language:
 
@@ -212,18 +322,18 @@ Contributions are welcome! To add a new language:
 1. Copy `windows/locales/en.ps1` to `windows/locales/[lang-code].ps1`
 2. Translate all `$script:MSG_*` variables
 
-4. Submit a pull request
+Then submit a pull request.
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - [Antigravity Tools](https://github.com/lbjlaq/Antigravity-Manager) - The application this updater supports
 - All contributors who helped with translations
 
-## Author
+## 👤 Author
 
 **Ercan ATAY**
 - GitHub: [@ercanatay](https://github.com/ercanatay)
@@ -231,4 +341,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+<p align="center">
 Made with ❤️ for the Antigravity Tools community
+</p>
