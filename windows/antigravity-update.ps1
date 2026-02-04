@@ -447,10 +447,15 @@ function Get-SavedLanguage {
 #region Application Functions
 
 function Find-InstalledApp {
+    # Try both naming conventions
+    $exeNames = @("antigravity_tools.exe", "Antigravity Tools.exe")
+    
     foreach ($path in $INSTALL_PATHS) {
-        $exePath = Join-Path $path "Antigravity Tools.exe"
-        if (Test-Path $exePath) {
-            return $path
+        foreach ($exeName in $exeNames) {
+            $exePath = Join-Path $path $exeName
+            if (Test-Path $exePath) {
+                return $path
+            }
         }
     }
     return $null
@@ -461,14 +466,19 @@ function Get-InstalledVersion {
 
     if (-not $AppPath) { return $null }
 
-    $exePath = Join-Path $AppPath "Antigravity Tools.exe"
-    if (Test-Path $exePath) {
-        try {
-            $version = (Get-Item $exePath).VersionInfo.ProductVersion
-            if ($version) { return $version }
-            $version = (Get-Item $exePath).VersionInfo.FileVersion
-            if ($version) { return $version }
-        } catch {}
+    # Try both naming conventions
+    $exeNames = @("antigravity_tools.exe", "Antigravity Tools.exe")
+    
+    foreach ($exeName in $exeNames) {
+        $exePath = Join-Path $AppPath $exeName
+        if (Test-Path $exePath) {
+            try {
+                $version = (Get-Item $exePath).VersionInfo.ProductVersion
+                if ($version) { return $version }
+                $version = (Get-Item $exePath).VersionInfo.FileVersion
+                if ($version) { return $version }
+            } catch {}
+        }
     }
 
     # Try version file
