@@ -402,6 +402,7 @@ show_language_menu() {
     elif [[ "$choice" =~ ^[0-9]+$ ]] && [[ "$choice" -ge 1 ]] && [[ "$choice" -le "$count" ]]; then
         SELECTED_LANG="${LANG_CODES[$((choice - 1))]}"
     else
+        echo -e "   ${YELLOW}⚠ Invalid selection, defaulting to English${NC}"
         SELECTED_LANG="en"
     fi
 
@@ -409,6 +410,7 @@ show_language_menu() {
     echo "$SELECTED_LANG" > "$LANG_PREF_FILE"
 
     load_language "$SELECTED_LANG"
+    echo -e "   ${GREEN}✓ $LANG_NAME${NC}"
 }
 
 # Check for saved language preference

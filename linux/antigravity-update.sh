@@ -205,11 +205,13 @@ show_language_menu() {
     elif [[ "$choice" =~ ^[0-9]+$ ]] && [[ "$choice" -ge 1 ]] && [[ "$choice" -le "$count" ]]; then
         SELECTED_LANG="${LANG_CODES[$((choice - 1))]}"
     else
+        echo "   [!] Invalid selection, defaulting to English"
         SELECTED_LANG="en"
     fi
 
     echo "$SELECTED_LANG" > "$LANG_PREF_FILE"
     load_language "$SELECTED_LANG" || true
+    echo "   -> $LANG_NAME"
 }
 
 check_language_preference() {

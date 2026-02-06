@@ -422,6 +422,7 @@ function Show-LanguageMenu {
     } elseif ($choice -match '^\d+$' -and [int]$choice -ge 1 -and [int]$choice -le $count) {
         $script:SELECTED_LANG = $LANG_CODES[[int]$choice - 1]
     } else {
+        Write-ColorOutput "   [!] Invalid selection, defaulting to English" "Yellow"
         $script:SELECTED_LANG = "en"
     }
 
@@ -429,6 +430,7 @@ function Show-LanguageMenu {
     $script:SELECTED_LANG | Out-File -FilePath $LANG_PREF_FILE -Encoding UTF8 -NoNewline
 
     Load-Language $script:SELECTED_LANG
+    Write-ColorOutput "   -> $($script:LANG_NAME)" "Green"
 }
 
 function Get-SavedLanguage {
