@@ -41,6 +41,12 @@ BACKUP_DIR="$LOG_DIR/backups"
 # Secure temp directory with random suffix
 TEMP_DIR=$(mktemp -d -t "AntigravityUpdater.XXXXXXXX")
 
+# Cleanup temp directory on exit (normal or error)
+cleanup() {
+    rm -rf "$TEMP_DIR"
+}
+trap cleanup EXIT
+
 # Language preference file
 LANG_PREF_FILE="$HOME/.antigravity_updater_lang"
 
@@ -589,21 +595,20 @@ if [[ "$SILENT" != true ]]; then
     echo -e "${BLUE}$MSG_CHECKING_LATEST${NC}"
 fi
 
-# Build curl command with optional proxy
-CURL_OPTS="-s -A \"AntigravityUpdater/$UPDATER_VERSION\""
+# Build curl command with optional proxy (using array to avoid eval)
+CURL_CMD=(curl -s -A "AntigravityUpdater/$UPDATER_VERSION")
 if [[ -n "$PROXY_URL" ]]; then
-    CURL_OPTS="$CURL_OPTS --proxy \"$PROXY_URL\""
+    CURL_CMD+=(--proxy "$PROXY_URL")
     write_log "INFO" "Using proxy: $PROXY_URL"
 fi
 
-RELEASE_INFO=$(eval curl $CURL_OPTS "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
+RELEASE_INFO=$("${CURL_CMD[@]}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
 
 if [[ -z "$RELEASE_INFO" ]] || [[ "$RELEASE_INFO" == *"rate limit"* ]]; then
     if [[ "$SILENT" != true ]]; then
         echo -e "${RED}$MSG_API_ERROR${NC}"
     fi
     write_log "ERROR" "GitHub API error"
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -630,7 +635,6 @@ if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]]; then
         echo -e "${GREEN}$MSG_ALREADY_LATEST${NC}"
     fi
     write_log "INFO" "Already on latest version"
-    rm -rf "$TEMP_DIR"
     exit 0
 fi
 
@@ -639,7 +643,6 @@ if [[ "$CHECK_ONLY" == true ]]; then
     echo ""
     echo -e "${YELLOW}Update available: $CURRENT_VERSION -> $LATEST_VERSION${NC}"
     write_log "INFO" "Check-only mode: update available"
-    rm -rf "$TEMP_DIR"
     exit 0
 fi
 
@@ -677,18 +680,17 @@ if [[ "$SILENT" != true ]]; then
 fi
 write_log "INFO" "Download URL: $DOWNLOAD_URL"
 
-# Build download command with optional proxy
-DOWNLOAD_OPTS="-L --progress-bar -o \"$DMG_PATH\""
+# Build download command with optional proxy (using array to avoid eval)
+DOWNLOAD_CMD=(curl -L --progress-bar -o "$DMG_PATH")
 if [[ -n "$PROXY_URL" ]]; then
-    DOWNLOAD_OPTS="$DOWNLOAD_OPTS --proxy \"$PROXY_URL\""
+    DOWNLOAD_CMD+=(--proxy "$PROXY_URL")
 fi
 
-if ! eval curl $DOWNLOAD_OPTS "\"$DOWNLOAD_URL\""; then
+if ! "${DOWNLOAD_CMD[@]}" "$DOWNLOAD_URL"; then
     if [[ "$SILENT" != true ]]; then
         echo -e "${RED}$MSG_DOWNLOAD_FAILED${NC}"
     fi
     write_log "ERROR" "Download failed"
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -701,7 +703,6 @@ if ! verify_download "$DMG_PATH"; then
     if [[ "$SILENT" != true ]]; then
         echo -e "${RED}File verification failed${NC}"
     fi
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -711,7 +712,7 @@ if [[ "$SILENT" != true ]]; then
 fi
 
 MOUNT_OUTPUT=$(hdiutil attach "$DMG_PATH" -nobrowse -quiet 2>&1)
-MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "Volumes" | awk '{print $NF}')
+MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "/Volumes/" | sed 's|.*\(/Volumes/.*\)|\1|')
 
 if [[ -z "$MOUNT_POINT" ]]; then
     MOUNT_POINT=$(ls -d /Volumes/*Antigravity* 2>/dev/null | head -1)
@@ -722,7 +723,6 @@ if [[ -z "$MOUNT_POINT" ]] || [[ ! -d "$MOUNT_POINT" ]]; then
         echo -e "${RED}$MSG_MOUNT_FAILED${NC}"
     fi
     write_log "ERROR" "Failed to mount DMG"
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -761,7 +761,6 @@ if [[ -z "$SOURCE_APP" ]] || [[ ! -d "$SOURCE_APP" ]]; then
     fi
     write_log "ERROR" "Application not found in DMG"
     hdiutil detach "$MOUNT_POINT" -quiet 2>/dev/null || true
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -802,9 +801,6 @@ if [[ "$SILENT" != true ]]; then
     echo -e "${BLUE}$MSG_UNMOUNTING${NC}"
 fi
 hdiutil detach "$MOUNT_POINT" -quiet 2>/dev/null || true
-
-# Cleanup
-rm -rf "$TEMP_DIR"
 
 # Success message
 if [[ "$SILENT" != true ]]; then

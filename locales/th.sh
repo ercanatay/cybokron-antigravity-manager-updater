@@ -32,3 +32,17 @@ MSG_NEW_VERSION_LABEL="เวอร์ชันใหม่"
 MSG_API_ERROR="❌ ไม่สามารถเข้าถึง GitHub API ได้"
 MSG_SELECT_LANGUAGE="เลือกภาษา"
 MSG_OPENING_APP="🚀 กำลังเปิดแอปพลิเคชัน..."
+# Backup & Rollback
+MSG_BACKUP_CREATED="✅ Backup created"
+MSG_BACKUP_FAILED="⚠️  Backup failed"
+MSG_ROLLBACK_SUCCESS="✅ Rollback successful"
+MSG_ROLLBACK_FAILED="❌ Rollback failed"
+MSG_NO_BACKUP="❌ No backup found"
+
+# Integrity & Code Signing
+MSG_HASH_VERIFY="🔍 Verifying file integrity..."
+MSG_HASH_OK="✅ File integrity verified"
+MSG_HASH_FAILED="❌ File integrity check failed!"
+MSG_CODESIGN_CHECK="🔐 Checking code signature..."
+MSG_CODESIGN_OK="✅ Code signature valid"
+MSG_CODESIGN_WARN="⚠️  Warning: Code signature not verified"

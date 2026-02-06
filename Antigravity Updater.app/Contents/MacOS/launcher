@@ -1,11 +1,22 @@
 #!/bin/bash
 
 # Terminal'de script'i çalıştır
-SCRIPT_DIR="$(dirname "$0")"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 UPDATER_SCRIPT="$SCRIPT_DIR/../Resources/antigravity-update.sh"
+
+# Resolve to absolute path and verify it exists
+UPDATER_SCRIPT="$(cd "$(dirname "$UPDATER_SCRIPT")" && pwd)/$(basename "$UPDATER_SCRIPT")"
+
+if [[ ! -f "$UPDATER_SCRIPT" ]]; then
+    osascript -e 'display dialog "Updater script not found." buttons {"OK"} default button "OK" with icon stop'
+    exit 1
+fi
+
+# Escape the path for safe use inside AppleScript
+ESCAPED_SCRIPT=$(printf '%s' "$UPDATER_SCRIPT" | sed "s/'/'\\\\''/g")
 
 # Terminal'i aç ve script'i çalıştır
 osascript -e "tell application \"Terminal\"
     activate
-    do script \"'$UPDATER_SCRIPT'\"
+    do script \"bash '${ESCAPED_SCRIPT}'\"
 end tell"
