@@ -722,7 +722,7 @@ if [[ "$SILENT" != true ]]; then
 fi
 
 MOUNT_OUTPUT=$(hdiutil attach "$DMG_PATH" -nobrowse -quiet 2>&1)
-MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "Volumes" | awk '{print $NF}')
+MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "/Volumes/" | sed 's|.*\(/Volumes/.*\)|\1|')
 
 if [[ -z "$MOUNT_POINT" ]]; then
     MOUNT_POINT=$(ls -d /Volumes/*Antigravity* 2>/dev/null | head -1)
