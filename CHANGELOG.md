@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.4.2] - 2026-02-06
+
+### Added
+- Linux updater now supports the shared 51-language locale set with language selection options:
+  - `--lang`
+  - `--reset-lang`
+- Docker updater now supports the shared 51-language locale set with language selection options:
+  - `--lang`
+  - `--reset-lang`
+
+### Changed
+- Rewrote `README.md` for clearer onboarding, platform guidance, and command reference
+- Updated Linux and Docker README files with language option usage examples
+- Bumped updater/application metadata and badges to `1.4.2`
+
 ## [1.4.1] - 2026-02-06
 
 ### Fixed
