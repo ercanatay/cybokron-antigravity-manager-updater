@@ -32,3 +32,17 @@ MSG_NEW_VERSION_LABEL="नया संस्करण"
 MSG_API_ERROR="❌ GitHub API तक पहुँच नहीं हो सकी"
 MSG_SELECT_LANGUAGE="भाषा चुनें"
 MSG_OPENING_APP="🚀 एप्लिकेशन खुल रहा है..."
+# Backup & Rollback
+MSG_BACKUP_CREATED="✅ Backup created"
+MSG_BACKUP_FAILED="⚠️  Backup failed"
+MSG_ROLLBACK_SUCCESS="✅ Rollback successful"
+MSG_ROLLBACK_FAILED="❌ Rollback failed"
+MSG_NO_BACKUP="❌ No backup found"
+
+# Integrity & Code Signing
+MSG_HASH_VERIFY="🔍 Verifying file integrity..."
+MSG_HASH_OK="✅ File integrity verified"
+MSG_HASH_FAILED="❌ File integrity check failed!"
+MSG_CODESIGN_CHECK="🔐 Checking code signature..."
+MSG_CODESIGN_OK="✅ Code signature valid"
+MSG_CODESIGN_WARN="⚠️  Warning: Code signature not verified"

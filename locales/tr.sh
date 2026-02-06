@@ -32,3 +32,17 @@ MSG_NEW_VERSION_LABEL="Yeni sürüm"
 MSG_API_ERROR="❌ GitHub API'ye erişilemedi"
 MSG_SELECT_LANGUAGE="Dil seçin / Select language"
 MSG_OPENING_APP="🚀 Uygulama açılıyor..."
+# Backup & Rollback
+MSG_BACKUP_CREATED="✅ Yedek oluşturuldu"
+MSG_BACKUP_FAILED="⚠️  Yedekleme başarısız"
+MSG_ROLLBACK_SUCCESS="✅ Geri alma başarılı"
+MSG_ROLLBACK_FAILED="❌ Geri alma başarısız"
+MSG_NO_BACKUP="❌ Yedek bulunamadı"
+
+# Integrity & Code Signing
+MSG_HASH_VERIFY="🔍 Dosya bütünlüğü doğrulanıyor..."
+MSG_HASH_OK="✅ Dosya bütünlüğü doğrulandı"
+MSG_HASH_FAILED="❌ Dosya bütünlük kontrolü başarısız!"
+MSG_CODESIGN_CHECK="🔐 Kod imzası kontrol ediliyor..."
+MSG_CODESIGN_OK="✅ Kod imzası geçerli"
+MSG_CODESIGN_WARN="⚠️  Uyarı: Kod imzası doğrulanamadı"
