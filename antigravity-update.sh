@@ -256,7 +256,7 @@ create_backup() {
     local backup_name="backup_$timestamp"
     local backup_path="$BACKUP_DIR/$backup_name"
 
-    if cp -R "$app_path" "$backup_path" 2>/dev/null; then
+    if ditto "$app_path" "$backup_path" 2>/dev/null; then
         # Keep only last 3 backups
         local backups=($(ls -dt "$BACKUP_DIR"/backup_* 2>/dev/null))
         if [[ ${#backups[@]} -gt 3 ]]; then
@@ -289,7 +289,7 @@ restore_backup() {
     fi
 
     # Restore from backup
-    if cp -R "$latest_backup" "$APP_PATH" 2>/dev/null; then
+    if ditto "$latest_backup" "$APP_PATH" 2>/dev/null; then
         # Remove quarantine
         xattr -cr "$APP_PATH" 2>/dev/null || true
 
@@ -829,7 +829,7 @@ if [[ "$SILENT" != true ]]; then
     echo -e "${BLUE}$MSG_COPYING_NEW${NC}"
 fi
 
-cp -R "$SOURCE_APP" "$APP_PATH"
+ditto "$SOURCE_APP" "$APP_PATH"
 if [[ "$SILENT" != true ]]; then
     echo -e "${GREEN}$MSG_COPIED${NC}"
 fi
