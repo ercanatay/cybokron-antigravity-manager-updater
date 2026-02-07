@@ -829,7 +829,14 @@ if [[ "$SILENT" != true ]]; then
     echo -e "${BLUE}$MSG_COPYING_NEW${NC}"
 fi
 
-ditto "$SOURCE_APP" "$APP_PATH"
+if ! ditto "$SOURCE_APP" "$APP_PATH"; then
+    if [[ "$SILENT" != true ]]; then
+        echo -e "${RED}Failed to copy application${NC}"
+    fi
+    write_log "ERROR" "Failed to copy application from $SOURCE_APP to $APP_PATH"
+    hdiutil detach "$MOUNT_POINT" -quiet 2>/dev/null || true
+    exit 1
+fi
 if [[ "$SILENT" != true ]]; then
     echo -e "${GREEN}$MSG_COPIED${NC}"
 fi
