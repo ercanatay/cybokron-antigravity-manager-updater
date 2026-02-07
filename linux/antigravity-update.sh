@@ -6,7 +6,7 @@
 
 set -euo pipefail
 
-UPDATER_VERSION="1.4.2"
+UPDATER_VERSION="1.4.3"
 REPO_OWNER="lbjlaq"
 REPO_NAME="Antigravity-Manager"
 APP_CMD_NAME="antigravity-tools"
@@ -344,15 +344,15 @@ fetch_release_info() {
         exit 1
     fi
 
-    LATEST_VERSION=$(printf '%s' "$RELEASE_INFO" | python3 -c 'import json,sys; j=json.load(sys.stdin); print((j.get("tag_name") or "").lstrip("v"))' 2>/dev/null || true)
+    # Optimization: Combine JSON parsing into a single python process
+    # Uses shlex.quote to safely escape strings for eval
+    eval "$(printf '%s' "$RELEASE_INFO" | python3 -c "import sys, json, shlex; data=json.load(sys.stdin); print(f'LATEST_VERSION={shlex.quote((data.get('tag_name') or '').lstrip('v'))}'); print(f'RELEASE_BODY={shlex.quote(data.get('body') or '')}')" 2>/dev/null || true)"
 
     if [[ -z "$LATEST_VERSION" ]]; then
         write_log "ERROR" "Could not parse latest version from GitHub response"
         echo "ERROR: Could not parse latest version from GitHub response." >&2
         exit 1
     fi
-
-    RELEASE_BODY=$(printf '%s' "$RELEASE_INFO" | python3 -c 'import json,sys; j=json.load(sys.stdin); print(j.get("body") or "")' 2>/dev/null || true)
 }
 
 select_asset() {
@@ -480,8 +480,8 @@ download_asset() {
 
 stop_running_app() {
     print_msg "$MSG_CLOSING_APP"
-    pkill -f "Antigravity Tools" 2>/dev/null || true
-    pkill -f "antigravity-tools" 2>/dev/null || true
+    pkill -x "Antigravity Tools" 2>/dev/null || true
+    pkill -x "antigravity-tools" 2>/dev/null || true
     sleep 1
 }
 

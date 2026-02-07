@@ -2,12 +2,12 @@
 
 # Antigravity Tools Updater - macOS Version
 # Supports 51 languages with automatic system language detection
-# Version 1.4.2 - Security Enhanced
+# Version 1.4.3 - Security Enhanced
 
 set -e
 
 # Version
-UPDATER_VERSION="1.4.2"
+UPDATER_VERSION="1.4.3"
 
 # Colors
 RED='\033[0;31m'
@@ -28,9 +28,11 @@ APP_PATH="/Applications/Antigravity Tools.app"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOCALES_DIR="$SCRIPT_DIR/locales"
 
-# If running from .app bundle, adjust path
+# If running from .app bundle, look for locales alongside the .app bundle
 if [[ "$SCRIPT_DIR" == *".app/Contents/Resources"* ]]; then
-    LOCALES_DIR="$SCRIPT_DIR/locales"
+    APP_BUNDLE_DIR="${SCRIPT_DIR%%.app/*}"
+    APP_BUNDLE_DIR="$(dirname "${APP_BUNDLE_DIR}.app")"
+    LOCALES_DIR="$APP_BUNDLE_DIR/locales"
 fi
 
 # Logging and backup directories
@@ -40,13 +42,10 @@ BACKUP_DIR="$LOG_DIR/backups"
 
 # Secure temp directory with random suffix
 TEMP_DIR=$(mktemp -d -t "AntigravityUpdater.XXXXXXXX")
-MOUNT_POINT=""
 
+# Cleanup on exit (normal or unexpected)
 cleanup() {
-    if [[ -n "${MOUNT_POINT:-}" ]] && [[ -d "$MOUNT_POINT" ]]; then
-        hdiutil detach "$MOUNT_POINT" -quiet >/dev/null 2>&1 || true
-    fi
-    rm -rf "$TEMP_DIR" >/dev/null 2>&1 || true
+    rm -rf "$TEMP_DIR"
 }
 trap cleanup EXIT
 
@@ -518,9 +517,8 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --proxy)
-            if [[ $# -lt 2 ]] || [[ -z "$2" ]] || [[ "$2" == -* ]]; then
-                echo -e "${RED}Error: --proxy requires a value.${NC}" >&2
-                print_usage
+            if [[ $# -lt 2 ]]; then
+                echo -e "${RED}Error: --proxy requires a URL value${NC}"
                 exit 1
             fi
             PROXY_URL="$2"
@@ -531,9 +529,7 @@ while [[ $# -gt 0 ]]; do
             exit 0
             ;;
         *)
-            echo -e "${RED}Error: Unknown option: $1${NC}" >&2
-            print_usage
-            exit 1
+            shift
             ;;
     esac
 done
@@ -572,7 +568,7 @@ if [[ "$SILENT" != true ]]; then
 
     echo -e "${CYAN}"
     echo "╔══════════════════════════════════════════════════════════╗"
-    echo "║         $MSG_TITLE v$UPDATER_VERSION"
+    echo "║         $MSG_TITLE v$UPDATER_VERSION              ║"
     echo "╚══════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
 
@@ -607,7 +603,6 @@ if ! command -v python3 >/dev/null 2>&1; then
         echo -e "${RED}Error: python3 is required for update checks.${NC}"
     fi
     write_log "ERROR" "python3 not found"
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -617,19 +612,13 @@ if [[ "$SILENT" != true ]]; then
 fi
 
 # Build curl command with optional proxy
-declare -a CURL_OPTS=("-sS" "-f" "-L" "-A" "AntigravityUpdater/$UPDATER_VERSION")
+declare -a CURL_OPTS=("-s" "-A" "AntigravityUpdater/$UPDATER_VERSION")
 if [[ -n "$PROXY_URL" ]]; then
     CURL_OPTS+=("--proxy" "$PROXY_URL")
     write_log "INFO" "Using proxy: $PROXY_URL"
 fi
 
-if ! RELEASE_INFO=$(curl "${CURL_OPTS[@]}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" 2>/dev/null); then
-    if [[ "$SILENT" != true ]]; then
-        echo -e "${RED}$MSG_API_ERROR${NC}"
-    fi
-    write_log "ERROR" "GitHub API request failed"
-    exit 1
-fi
+RELEASE_INFO=$(curl "${CURL_OPTS[@]}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
 
 if [[ -z "$RELEASE_INFO" ]] || [[ "$RELEASE_INFO" == *"rate limit"* ]]; then
     if [[ "$SILENT" != true ]]; then
@@ -641,14 +630,6 @@ fi
 
 LATEST_VERSION=$(echo "$RELEASE_INFO" | python3 -c "import sys, json; print(json.load(sys.stdin).get('tag_name', '').lstrip('v'))" 2>/dev/null || echo "")
 RELEASE_BODY=$(echo "$RELEASE_INFO" | python3 -c "import sys, json; print(json.load(sys.stdin).get('body', ''))" 2>/dev/null || echo "")
-
-if [[ -z "$LATEST_VERSION" ]]; then
-    if [[ "$SILENT" != true ]]; then
-        echo -e "${RED}$MSG_API_ERROR${NC}"
-    fi
-    write_log "ERROR" "Could not parse latest version from GitHub response"
-    exit 1
-fi
 
 if [[ "$SILENT" != true ]]; then
     echo -e "   $MSG_LATEST:    ${GREEN}$LATEST_VERSION${NC}"
@@ -692,8 +673,8 @@ if [[ "$NO_BACKUP" != true ]] && [[ -d "$APP_PATH" ]]; then
         echo -e "${BLUE}Creating backup...${NC}"
     fi
 
-    backup_path=""
-    if backup_path=$(create_backup "$APP_PATH"); then
+    backup_path=$(create_backup "$APP_PATH")
+    if [[ -n "$backup_path" ]]; then
         if [[ "$SILENT" != true ]]; then
             echo -e "   ${GREEN}$MSG_BACKUP_CREATED${NC}"
         fi
@@ -726,6 +707,7 @@ if ! curl "${DOWNLOAD_OPTS[@]}" "$DOWNLOAD_URL"; then
         echo -e "${RED}$MSG_DOWNLOAD_FAILED${NC}"
     fi
     write_log "ERROR" "Download failed"
+    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -746,17 +728,11 @@ if [[ "$SILENT" != true ]]; then
     echo -e "${BLUE}$MSG_MOUNTING${NC}"
 fi
 
-if ! MOUNT_OUTPUT=$(hdiutil attach "$DMG_PATH" -nobrowse -quiet 2>&1); then
-    if [[ "$SILENT" != true ]]; then
-        echo -e "${RED}$MSG_MOUNT_FAILED${NC}"
-    fi
-    write_log "ERROR" "Failed to mount DMG: $MOUNT_OUTPUT"
-    exit 1
-fi
-MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "/Volumes/" | sed 's|.*\(/Volumes/.*\)|\1|' || true)
+MOUNT_OUTPUT=$(hdiutil attach "$DMG_PATH" -nobrowse -quiet 2>&1)
+MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "/Volumes/" | sed 's|.*\(/Volumes/.*\)|\1|')
 
 if [[ -z "$MOUNT_POINT" ]]; then
-    MOUNT_POINT=$(ls -d /Volumes/*Antigravity* 2>/dev/null | head -1 || true)
+    MOUNT_POINT=$(ls -d /Volumes/*Antigravity* 2>/dev/null | head -1)
 fi
 
 if [[ -z "$MOUNT_POINT" ]] || [[ ! -d "$MOUNT_POINT" ]]; then
@@ -801,6 +777,7 @@ if [[ -z "$SOURCE_APP" ]] || [[ ! -d "$SOURCE_APP" ]]; then
         echo -e "${RED}$MSG_APP_NOT_FOUND${NC}"
     fi
     write_log "ERROR" "Application not found in DMG"
+    hdiutil detach "$MOUNT_POINT" -quiet 2>/dev/null || true
     exit 1
 fi
 
@@ -841,13 +818,12 @@ if [[ "$SILENT" != true ]]; then
     echo -e "${BLUE}$MSG_UNMOUNTING${NC}"
 fi
 hdiutil detach "$MOUNT_POINT" -quiet 2>/dev/null || true
-MOUNT_POINT=""
 
 # Success message
 if [[ "$SILENT" != true ]]; then
     echo ""
     echo -e "${GREEN}╔══════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║         $MSG_UPDATE_SUCCESS${NC}"
+    echo -e "${GREEN}║         $MSG_UPDATE_SUCCESS                    ║${NC}"
     echo -e "${GREEN}╚══════════════════════════════════════════════════════════╝${NC}"
     echo ""
     echo -e "   $MSG_OLD_VERSION: ${YELLOW}$CURRENT_VERSION${NC}"
