@@ -166,12 +166,17 @@ validate_path() {
     local resolved_path=$(cd "$(dirname "$path")" 2>/dev/null && pwd)/$(basename "$path")
     local resolved_base=$(cd "$base_path" 2>/dev/null && pwd)
 
-    # Check if path starts with base
-    if [[ "$resolved_path" == "$resolved_base"* ]]; then
+    # Check if path is exactly base or starts with base/
+    if [[ "$resolved_path" == "$resolved_base" ]] || [[ "$resolved_path" == "$resolved_base"/* ]]; then
         return 0
     fi
 
     return 1
+}
+
+# Compare versions (returns 0 if $1 > $2)
+version_gt() {
+    python3 -c "import sys; v1=[int(x) for x in sys.argv[1].split('-')[0].split('.')]; v2=[int(x) for x in sys.argv[2].split('-')[0].split('.')]; print(1 if v1 > v2 else 0)" "$1" "$2" 2>/dev/null | grep -q 1
 }
 
 # Calculate SHA256 hash
@@ -292,10 +297,19 @@ create_backup() {
     local backup_path="$BACKUP_DIR/$backup_name"
 
     if ditto "$app_path" "$backup_path" 2>/dev/null; then
-        # Keep only last 3 backups
-        local backups=($(ls -dt "$BACKUP_DIR"/backup_* 2>/dev/null))
+        # Keep only the latest 3 backups (names are timestamped, so lexical order is chronological).
+        local backups=()
+        local backup
+        shopt -s nullglob
+        for backup in "$BACKUP_DIR"/backup_*; do
+            [[ -d "$backup" ]] || continue
+            backups+=("$backup")
+        done
+        shopt -u nullglob
+
         if [[ ${#backups[@]} -gt 3 ]]; then
-            for ((i=3; i<${#backups[@]}; i++)); do
+            local remove_count=$(( ${#backups[@]} - 3 ))
+            for ((i=0; i<remove_count; i++)); do
                 rm -rf "${backups[$i]}"
             done
         fi
@@ -310,7 +324,20 @@ create_backup() {
 }
 
 restore_backup() {
-    local latest_backup=$(ls -dt "$BACKUP_DIR"/backup_* 2>/dev/null | head -1)
+    local backups=()
+    local backup
+    local latest_backup=""
+    shopt -s nullglob
+    for backup in "$BACKUP_DIR"/backup_*; do
+        [[ -d "$backup" ]] || continue
+        backups+=("$backup")
+    done
+    shopt -u nullglob
+
+    if [[ ${#backups[@]} -gt 0 ]]; then
+        local last_idx=$(( ${#backups[@]} - 1 ))
+        latest_backup="${backups[$last_idx]}"
+    fi
 
     if [[ -z "$latest_backup" ]] || [[ ! -d "$latest_backup" ]]; then
         echo -e "${RED}$MSG_NO_BACKUP${NC}"
@@ -647,13 +674,19 @@ if [[ "$SILENT" != true ]]; then
 fi
 
 # Build curl command with optional proxy
-declare -a CURL_OPTS=("-s" "-A" "AntigravityUpdater/$UPDATER_VERSION")
+declare -a CURL_OPTS=("-s" "-f" "-A" "AntigravityUpdater/$UPDATER_VERSION")
 if [[ -n "$PROXY_URL" ]]; then
     CURL_OPTS+=("--proxy" "$PROXY_URL")
     write_log "INFO" "Using proxy: $PROXY_URL"
 fi
 
-RELEASE_INFO=$(curl "${CURL_OPTS[@]}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
+if ! RELEASE_INFO=$(curl "${CURL_OPTS[@]}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" 2>/dev/null); then
+    if [[ "$SILENT" != true ]]; then
+        echo -e "${RED}$MSG_API_ERROR${NC}"
+    fi
+    write_log "ERROR" "GitHub API request failed"
+    exit 1
+fi
 
 if [[ -z "$RELEASE_INFO" ]] || [[ "$RELEASE_INFO" == *"rate limit"* ]]; then
     if [[ "$SILENT" != true ]]; then
@@ -710,12 +743,12 @@ if [[ "$SHOW_CHANGELOG" == true ]] && [[ "$SILENT" != true ]]; then
 fi
 
 # Check if update is needed
-if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]]; then
+if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]] || ! version_gt "$LATEST_VERSION" "$CURRENT_VERSION"; then
     if [[ "$SILENT" != true ]]; then
         echo ""
         echo -e "${GREEN}$MSG_ALREADY_LATEST${NC}"
     fi
-    write_log "INFO" "Already on latest version"
+    write_log "INFO" "Already on latest version (Current: $CURRENT_VERSION, Latest: $LATEST_VERSION)"
     exit 0
 fi
 
@@ -797,7 +830,12 @@ MOUNT_OUTPUT=$(hdiutil attach "$DMG_PATH" -nobrowse -quiet 2>&1)
 MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "/Volumes/" | sed 's|.*\(/Volumes/.*\)|\1|')
 
 if [[ -z "$MOUNT_POINT" ]]; then
-    MOUNT_POINT=$(ls -d /Volumes/*Antigravity* 2>/dev/null | head -1)
+    shopt -s nullglob
+    volume_candidates=(/Volumes/*Antigravity*)
+    shopt -u nullglob
+    if [[ ${#volume_candidates[@]} -gt 0 ]]; then
+        MOUNT_POINT="${volume_candidates[0]}"
+    fi
 fi
 
 if [[ -z "$MOUNT_POINT" ]] || [[ ! -d "$MOUNT_POINT" ]]; then

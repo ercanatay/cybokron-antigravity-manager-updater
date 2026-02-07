@@ -255,6 +255,8 @@ function New-Backup {
         $backupPath = Join-Path $BACKUP_DIR $backupName
 
         Copy-Item -Path $AppPath -Destination $backupPath -Recurse -Force
+        $resolvedPath = [System.IO.Path]::GetFullPath($AppPath)
+        $resolvedPath | Out-File -FilePath (Join-Path $backupPath "backup-path.txt") -Encoding UTF8 -NoNewline
 
         # Keep only last 3 backups
         $backups = Get-ChildItem $BACKUP_DIR -Directory | Sort-Object CreationTime -Descending
@@ -282,16 +284,44 @@ function Restore-Backup {
     }
 
     try {
-        $targetPath = Join-Path $env:LOCALAPPDATA "Antigravity Tools"
+        $targetPath = $null
+        $metadataPath = Join-Path $backups.FullName "backup-path.txt"
+
+        if (Test-Path $metadataPath) {
+            try {
+                $savedPath = (Get-Content $metadataPath -Raw).Trim()
+                if ($savedPath -and ($INSTALL_PATHS -contains $savedPath)) {
+                    $targetPath = $savedPath
+                } elseif ($savedPath) {
+                    Write-Log "Ignoring backup target outside known install paths: $savedPath" "WARN"
+                }
+            } catch {
+                Write-Log "Failed to read backup metadata: $_" "WARN"
+            }
+        }
+
+        if (-not $targetPath) {
+            $detectedPath = Find-InstalledApp
+            if ($detectedPath -and ($INSTALL_PATHS -contains $detectedPath)) {
+                $targetPath = $detectedPath
+            } else {
+                $targetPath = Join-Path $env:LOCALAPPDATA "Antigravity Tools"
+            }
+        }
 
         if (Test-Path $targetPath) {
             Remove-Item -Path $targetPath -Recurse -Force
         }
 
-        Copy-Item -Path $backups.FullName -Destination $targetPath -Recurse -Force
+        New-Item -ItemType Directory -Path $targetPath -Force | Out-Null
+        Get-ChildItem -Path $backups.FullName -Force |
+            Where-Object { $_.Name -ne "backup-path.txt" } |
+            ForEach-Object {
+                Copy-Item -Path $_.FullName -Destination $targetPath -Recurse -Force
+            }
 
         Write-ColorOutput "$script:MSG_ROLLBACK_SUCCESS" "Green"
-        Write-Log "Rollback successful from: $($backups.FullName)" "INFO"
+        Write-Log "Rollback successful from: $($backups.FullName) to: $targetPath" "INFO"
         return $true
     } catch {
         Write-ColorOutput "$script:MSG_ROLLBACK_FAILED" "Red"
@@ -547,6 +577,46 @@ function Get-ReleaseInfo {
     }
 }
 
+function Get-WindowsAsset {
+    param([object[]]$Assets)
+
+    if (-not $Assets) {
+        return $null
+    }
+
+    $candidates = @($Assets | Where-Object {
+        $_.name -and $_.browser_download_url -and ($_.name -notmatch '(?i)\.sig$')
+    })
+
+    if ($candidates.Count -eq 0) {
+        return $null
+    }
+
+    $platformPattern = '(?i)(^|[._-])(windows|win)([._-]|$)'
+
+    $asset = $candidates | Where-Object {
+        $_.name -match '(?i)\.msi$' -and ($_.name -match $platformPattern -or $_.name -match '(?i)x64')
+    } | Select-Object -First 1
+    if ($asset) { return $asset }
+
+    $asset = $candidates | Where-Object {
+        $_.name -match '(?i)\.exe$' -and ($_.name -match $platformPattern -or $_.name -match '(?i)x64')
+    } | Select-Object -First 1
+    if ($asset) { return $asset }
+
+    $asset = $candidates | Where-Object {
+        $_.name -match '(?i)\.zip$' -and ($_.name -match $platformPattern -or $_.name -match '(?i)x64')
+    } | Select-Object -First 1
+    if ($asset) { return $asset }
+
+    return $candidates |
+        Where-Object { $_.name -match '(?i)\.(msi|exe|zip)$' } |
+        Sort-Object `
+            @{ Expression = { if ($_.name -match '(?i)\.msi$') { 0 } elseif ($_.name -match '(?i)\.exe$') { 1 } else { 2 } } }, `
+            @{ Expression = { if ($_.name -match '(?i)x64') { 0 } else { 1 } } } |
+        Select-Object -First 1
+}
+
 function Show-Changelog {
     param($ReleaseInfo)
 
@@ -783,16 +853,7 @@ Write-Host ""
 Write-ColorOutput "$script:MSG_NEW_VERSION" "Yellow"
 
 # Find Windows download asset
-$windowsAsset = $releaseInfo.assets | Where-Object {
-    $_.name -match "windows" -or $_.name -match "win" -or $_.name -match "x64.*\.zip" -or $_.name -match "\.msi$" -or $_.name -match "\.exe$"
-} | Select-Object -First 1
-
-if (-not $windowsAsset) {
-    # Try to find any zip or msi
-    $windowsAsset = $releaseInfo.assets | Where-Object {
-        $_.name -match "\.zip$" -or $_.name -match "\.msi$"
-    } | Select-Object -First 1
-}
+$windowsAsset = Get-WindowsAsset -Assets $releaseInfo.assets
 
 if (-not $windowsAsset) {
     Write-ColorOutput "No Windows download found in release" "Red"

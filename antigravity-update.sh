@@ -297,10 +297,19 @@ create_backup() {
     local backup_path="$BACKUP_DIR/$backup_name"
 
     if ditto "$app_path" "$backup_path" 2>/dev/null; then
-        # Keep only last 3 backups
-        local backups=($(ls -dt "$BACKUP_DIR"/backup_* 2>/dev/null))
+        # Keep only the latest 3 backups (names are timestamped, so lexical order is chronological).
+        local backups=()
+        local backup
+        shopt -s nullglob
+        for backup in "$BACKUP_DIR"/backup_*; do
+            [[ -d "$backup" ]] || continue
+            backups+=("$backup")
+        done
+        shopt -u nullglob
+
         if [[ ${#backups[@]} -gt 3 ]]; then
-            for ((i=3; i<${#backups[@]}; i++)); do
+            local remove_count=$(( ${#backups[@]} - 3 ))
+            for ((i=0; i<remove_count; i++)); do
                 rm -rf "${backups[$i]}"
             done
         fi
@@ -315,7 +324,20 @@ create_backup() {
 }
 
 restore_backup() {
-    local latest_backup=$(ls -dt "$BACKUP_DIR"/backup_* 2>/dev/null | head -1)
+    local backups=()
+    local backup
+    local latest_backup=""
+    shopt -s nullglob
+    for backup in "$BACKUP_DIR"/backup_*; do
+        [[ -d "$backup" ]] || continue
+        backups+=("$backup")
+    done
+    shopt -u nullglob
+
+    if [[ ${#backups[@]} -gt 0 ]]; then
+        local last_idx=$(( ${#backups[@]} - 1 ))
+        latest_backup="${backups[$last_idx]}"
+    fi
 
     if [[ -z "$latest_backup" ]] || [[ ! -d "$latest_backup" ]]; then
         echo -e "${RED}$MSG_NO_BACKUP${NC}"
@@ -652,13 +674,19 @@ if [[ "$SILENT" != true ]]; then
 fi
 
 # Build curl command with optional proxy
-declare -a CURL_OPTS=("-s" "-A" "AntigravityUpdater/$UPDATER_VERSION")
+declare -a CURL_OPTS=("-s" "-f" "-A" "AntigravityUpdater/$UPDATER_VERSION")
 if [[ -n "$PROXY_URL" ]]; then
     CURL_OPTS+=("--proxy" "$PROXY_URL")
     write_log "INFO" "Using proxy: $PROXY_URL"
 fi
 
-RELEASE_INFO=$(curl "${CURL_OPTS[@]}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
+if ! RELEASE_INFO=$(curl "${CURL_OPTS[@]}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" 2>/dev/null); then
+    if [[ "$SILENT" != true ]]; then
+        echo -e "${RED}$MSG_API_ERROR${NC}"
+    fi
+    write_log "ERROR" "GitHub API request failed"
+    exit 1
+fi
 
 if [[ -z "$RELEASE_INFO" ]] || [[ "$RELEASE_INFO" == *"rate limit"* ]]; then
     if [[ "$SILENT" != true ]]; then
@@ -802,7 +830,12 @@ MOUNT_OUTPUT=$(hdiutil attach "$DMG_PATH" -nobrowse -quiet 2>&1)
 MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "/Volumes/" | sed 's|.*\(/Volumes/.*\)|\1|')
 
 if [[ -z "$MOUNT_POINT" ]]; then
-    MOUNT_POINT=$(ls -d /Volumes/*Antigravity* 2>/dev/null | head -1)
+    shopt -s nullglob
+    volume_candidates=(/Volumes/*Antigravity*)
+    shopt -u nullglob
+    if [[ ${#volume_candidates[@]} -gt 0 ]]; then
+        MOUNT_POINT="${volume_candidates[0]}"
+    fi
 fi
 
 if [[ -z "$MOUNT_POINT" ]] || [[ ! -d "$MOUNT_POINT" ]]; then
