@@ -73,6 +73,7 @@ MSG_STOPPING_CONTAINER="Stopping container"
 MSG_REMOVING_CONTAINER="Removing container"
 MSG_STARTING_CONTAINER="Starting container with new image"
 MSG_DOCKER_NOT_INSTALLED="Docker is not installed"
+MSG_DOCKER_DAEMON_UNAVAILABLE="Docker daemon is not reachable"
 MSG_NO_ACTION="No action needed"
 MSG_UPDATE_AVAILABLE="Update available"
 
@@ -315,7 +316,7 @@ ensure_docker() {
 }
 
 inspect_container() {
-    if docker ps -a --format '{{.Names}}' | grep -Fx "$CONTAINER_NAME" >/dev/null 2>&1; then
+    if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -Fx "$CONTAINER_NAME" >/dev/null 2>&1; then
         CONTAINER_EXISTS=true
         CURRENT_IMAGE=$(docker inspect -f '{{.Config.Image}}' "$CONTAINER_NAME" 2>/dev/null || echo "Unknown")
     else
@@ -332,7 +333,7 @@ is_compose_managed() {
 }
 
 pull_target_image() {
-    print_msg "$MSG_DOWNLOADING $TARGET_IMAGE"
+    print_msg "$MSG_PULLING_IMAGE: $TARGET_IMAGE"
 
     if ! docker pull "$TARGET_IMAGE"; then
         write_log "ERROR" "docker pull failed for $TARGET_IMAGE"
@@ -515,6 +516,12 @@ run_check_only() {
         return
     fi
 
+    if ! docker info >/dev/null 2>&1; then
+        echo "WARNING: $MSG_DOCKER_DAEMON_UNAVAILABLE."
+        echo "$MSG_LATEST: $TARGET_IMAGE"
+        return
+    fi
+
     inspect_container
 
     if [[ "$CONTAINER_EXISTS" == true ]]; then
@@ -549,7 +556,7 @@ main() {
                 RESTART_CONTAINER=true
                 ;;
             --container-name)
-                if [[ $# -lt 2 ]]; then
+                if [[ $# -lt 2 ]] || [[ -z "$2" ]] || [[ "$2" == -* ]]; then
                     echo "ERROR: --container-name requires a value" >&2
                     exit 1
                 fi
@@ -557,7 +564,7 @@ main() {
                 shift
                 ;;
             --image)
-                if [[ $# -lt 2 ]]; then
+                if [[ $# -lt 2 ]] || [[ -z "$2" ]] || [[ "$2" == -* ]]; then
                     echo "ERROR: --image requires a value" >&2
                     exit 1
                 fi
@@ -565,7 +572,7 @@ main() {
                 shift
                 ;;
             --tag)
-                if [[ $# -lt 2 ]]; then
+                if [[ $# -lt 2 ]] || [[ -z "$2" ]] || [[ "$2" == -* ]]; then
                     echo "ERROR: --tag requires a value" >&2
                     exit 1
                 fi
@@ -573,7 +580,7 @@ main() {
                 shift
                 ;;
             --proxy)
-                if [[ $# -lt 2 ]]; then
+                if [[ $# -lt 2 ]] || [[ -z "$2" ]] || [[ "$2" == -* ]]; then
                     echo "ERROR: --proxy requires a value" >&2
                     exit 1
                 fi

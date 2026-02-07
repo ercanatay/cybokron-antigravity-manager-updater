@@ -40,6 +40,15 @@ BACKUP_DIR="$LOG_DIR/backups"
 
 # Secure temp directory with random suffix
 TEMP_DIR=$(mktemp -d -t "AntigravityUpdater.XXXXXXXX")
+MOUNT_POINT=""
+
+cleanup() {
+    if [[ -n "${MOUNT_POINT:-}" ]] && [[ -d "$MOUNT_POINT" ]]; then
+        hdiutil detach "$MOUNT_POINT" -quiet >/dev/null 2>&1 || true
+    fi
+    rm -rf "$TEMP_DIR" >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
 
 # Language preference file
 LANG_PREF_FILE="$HOME/.antigravity_updater_lang"
@@ -509,6 +518,11 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --proxy)
+            if [[ $# -lt 2 ]] || [[ -z "$2" ]] || [[ "$2" == -* ]]; then
+                echo -e "${RED}Error: --proxy requires a value.${NC}" >&2
+                print_usage
+                exit 1
+            fi
             PROXY_URL="$2"
             shift 2
             ;;
@@ -517,7 +531,9 @@ while [[ $# -gt 0 ]]; do
             exit 0
             ;;
         *)
-            shift
+            echo -e "${RED}Error: Unknown option: $1${NC}" >&2
+            print_usage
+            exit 1
             ;;
     esac
 done
@@ -601,25 +617,38 @@ if [[ "$SILENT" != true ]]; then
 fi
 
 # Build curl command with optional proxy
-declare -a CURL_OPTS=("-s" "-A" "AntigravityUpdater/$UPDATER_VERSION")
+declare -a CURL_OPTS=("-sS" "-f" "-L" "-A" "AntigravityUpdater/$UPDATER_VERSION")
 if [[ -n "$PROXY_URL" ]]; then
     CURL_OPTS+=("--proxy" "$PROXY_URL")
     write_log "INFO" "Using proxy: $PROXY_URL"
 fi
 
-RELEASE_INFO=$(curl "${CURL_OPTS[@]}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
+if ! RELEASE_INFO=$(curl "${CURL_OPTS[@]}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" 2>/dev/null); then
+    if [[ "$SILENT" != true ]]; then
+        echo -e "${RED}$MSG_API_ERROR${NC}"
+    fi
+    write_log "ERROR" "GitHub API request failed"
+    exit 1
+fi
 
 if [[ -z "$RELEASE_INFO" ]] || [[ "$RELEASE_INFO" == *"rate limit"* ]]; then
     if [[ "$SILENT" != true ]]; then
         echo -e "${RED}$MSG_API_ERROR${NC}"
     fi
     write_log "ERROR" "GitHub API error"
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
 LATEST_VERSION=$(echo "$RELEASE_INFO" | python3 -c "import sys, json; print(json.load(sys.stdin).get('tag_name', '').lstrip('v'))" 2>/dev/null || echo "")
 RELEASE_BODY=$(echo "$RELEASE_INFO" | python3 -c "import sys, json; print(json.load(sys.stdin).get('body', ''))" 2>/dev/null || echo "")
+
+if [[ -z "$LATEST_VERSION" ]]; then
+    if [[ "$SILENT" != true ]]; then
+        echo -e "${RED}$MSG_API_ERROR${NC}"
+    fi
+    write_log "ERROR" "Could not parse latest version from GitHub response"
+    exit 1
+fi
 
 if [[ "$SILENT" != true ]]; then
     echo -e "   $MSG_LATEST:    ${GREEN}$LATEST_VERSION${NC}"
@@ -641,7 +670,6 @@ if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]]; then
         echo -e "${GREEN}$MSG_ALREADY_LATEST${NC}"
     fi
     write_log "INFO" "Already on latest version"
-    rm -rf "$TEMP_DIR"
     exit 0
 fi
 
@@ -650,7 +678,6 @@ if [[ "$CHECK_ONLY" == true ]]; then
     echo ""
     echo -e "${YELLOW}Update available: $CURRENT_VERSION -> $LATEST_VERSION${NC}"
     write_log "INFO" "Check-only mode: update available"
-    rm -rf "$TEMP_DIR"
     exit 0
 fi
 
@@ -665,8 +692,8 @@ if [[ "$NO_BACKUP" != true ]] && [[ -d "$APP_PATH" ]]; then
         echo -e "${BLUE}Creating backup...${NC}"
     fi
 
-    backup_path=$(create_backup "$APP_PATH")
-    if [[ -n "$backup_path" ]]; then
+    backup_path=""
+    if backup_path=$(create_backup "$APP_PATH"); then
         if [[ "$SILENT" != true ]]; then
             echo -e "   ${GREEN}$MSG_BACKUP_CREATED${NC}"
         fi
@@ -699,7 +726,6 @@ if ! curl "${DOWNLOAD_OPTS[@]}" "$DOWNLOAD_URL"; then
         echo -e "${RED}$MSG_DOWNLOAD_FAILED${NC}"
     fi
     write_log "ERROR" "Download failed"
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -712,7 +738,6 @@ if ! verify_download "$DMG_PATH"; then
     if [[ "$SILENT" != true ]]; then
         echo -e "${RED}File verification failed${NC}"
     fi
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -721,11 +746,17 @@ if [[ "$SILENT" != true ]]; then
     echo -e "${BLUE}$MSG_MOUNTING${NC}"
 fi
 
-MOUNT_OUTPUT=$(hdiutil attach "$DMG_PATH" -nobrowse -quiet 2>&1)
-MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "/Volumes/" | sed 's|.*\(/Volumes/.*\)|\1|')
+if ! MOUNT_OUTPUT=$(hdiutil attach "$DMG_PATH" -nobrowse -quiet 2>&1); then
+    if [[ "$SILENT" != true ]]; then
+        echo -e "${RED}$MSG_MOUNT_FAILED${NC}"
+    fi
+    write_log "ERROR" "Failed to mount DMG: $MOUNT_OUTPUT"
+    exit 1
+fi
+MOUNT_POINT=$(echo "$MOUNT_OUTPUT" | grep "/Volumes/" | sed 's|.*\(/Volumes/.*\)|\1|' || true)
 
 if [[ -z "$MOUNT_POINT" ]]; then
-    MOUNT_POINT=$(ls -d /Volumes/*Antigravity* 2>/dev/null | head -1)
+    MOUNT_POINT=$(ls -d /Volumes/*Antigravity* 2>/dev/null | head -1 || true)
 fi
 
 if [[ -z "$MOUNT_POINT" ]] || [[ ! -d "$MOUNT_POINT" ]]; then
@@ -733,7 +764,6 @@ if [[ -z "$MOUNT_POINT" ]] || [[ ! -d "$MOUNT_POINT" ]]; then
         echo -e "${RED}$MSG_MOUNT_FAILED${NC}"
     fi
     write_log "ERROR" "Failed to mount DMG"
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -771,8 +801,6 @@ if [[ -z "$SOURCE_APP" ]] || [[ ! -d "$SOURCE_APP" ]]; then
         echo -e "${RED}$MSG_APP_NOT_FOUND${NC}"
     fi
     write_log "ERROR" "Application not found in DMG"
-    hdiutil detach "$MOUNT_POINT" -quiet 2>/dev/null || true
-    rm -rf "$TEMP_DIR"
     exit 1
 fi
 
@@ -813,9 +841,7 @@ if [[ "$SILENT" != true ]]; then
     echo -e "${BLUE}$MSG_UNMOUNTING${NC}"
 fi
 hdiutil detach "$MOUNT_POINT" -quiet 2>/dev/null || true
-
-# Cleanup
-rm -rf "$TEMP_DIR"
+MOUNT_POINT=""
 
 # Success message
 if [[ "$SILENT" != true ]]; then

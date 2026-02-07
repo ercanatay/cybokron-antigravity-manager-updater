@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- macOS updater now validates unknown CLI options and `--proxy` missing value with explicit nonzero failure.
+- macOS update flow now handles GitHub API fetch, backup capture, and DMG mount failures via guarded paths under `set -e`.
+- Windows updater no longer prompts for language/rollback input in `-Silent` mode.
+- Windows updater now fails fast on unsupported downloaded installer extensions instead of reporting false success.
+- Docker updater `--check-only` now handles Docker daemon-unreachable state with a concise warning and exit code `0`.
+
+### Changed
+- Linux updater now uses a Linux-specific package download status message to avoid shared-locale DMG wording bleed.
+- Docker updater now uses a Docker-specific image pull status message and suppresses daemon errors in container probe output.
+
 ## [1.4.2] - 2026-02-06
 
 ### Added

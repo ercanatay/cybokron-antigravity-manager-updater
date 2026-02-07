@@ -56,6 +56,7 @@ MSG_ARCH="Architecture"
 MSG_ALREADY_LATEST="You already have the latest version!"
 MSG_NEW_VERSION="New version available! Starting download..."
 MSG_DOWNLOADING="Downloading..."
+MSG_DOWNLOADING_ASSET="Downloading package..."
 MSG_DOWNLOAD_FAILED="Download failed!"
 MSG_DOWNLOAD_COMPLETE="Download complete"
 MSG_UPDATE_SUCCESS="UPDATE COMPLETED SUCCESSFULLY!"
@@ -458,7 +459,7 @@ download_asset() {
         curl_cmd+=(--proxy "$PROXY_URL")
     fi
 
-    print_msg "$MSG_DOWNLOADING $DOWNLOAD_NAME"
+    print_msg "$MSG_DOWNLOADING_ASSET $DOWNLOAD_NAME"
     print_msg "URL: $DOWNLOAD_URL"
 
     if ! "${curl_cmd[@]}" "$DOWNLOAD_URL"; then
@@ -610,7 +611,7 @@ main() {
                 SILENT=true
                 ;;
             --proxy)
-                if [[ $# -lt 2 ]]; then
+                if [[ $# -lt 2 ]] || [[ -z "$2" ]] || [[ "$2" == -* ]]; then
                     echo "ERROR: --proxy requires a value" >&2
                     exit 1
                 fi

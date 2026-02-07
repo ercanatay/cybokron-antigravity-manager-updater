@@ -325,6 +325,12 @@ function Show-Progress {
     }
 }
 
+function Remove-TempDirectory {
+    if ($TEMP_DIR -and (Test-Path $TEMP_DIR)) {
+        Remove-Item -Path $TEMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
 #endregion
 
 #region Language Functions
@@ -440,6 +446,11 @@ function Get-SavedLanguage {
         }
     }
     return $false
+}
+
+function Save-LanguagePreference {
+    param([string]$LangCode)
+    $LangCode | Out-File -FilePath $LANG_PREF_FILE -Encoding UTF8 -NoNewline
 }
 
 #endregion
@@ -627,34 +638,62 @@ if ($Help) {
 if ($Rollback) {
     Write-Log "Rollback requested" "INFO"
     if (Restore-Backup) {
-        Read-Host "Press Enter to exit"
+        if (-not $Silent) { Read-Host "Press Enter to exit" }
         exit 0
     } else {
-        Read-Host "Press Enter to exit"
+        if (-not $Silent) { Read-Host "Press Enter to exit" }
         exit 1
     }
 }
 
 # Handle language selection
-if ($ResetLang) {
-    if (Test-Path $LANG_PREF_FILE) {
-        Remove-Item $LANG_PREF_FILE -Force
-    }
-    Show-LanguageMenu
-} elseif ($Lang -or $SetLang) {
-    if ($SetLang -and $LANG_CODES -contains $SetLang) {
-        $SetLang | Out-File -FilePath $LANG_PREF_FILE -Encoding UTF8 -NoNewline
-        Load-Language $SetLang
-    } else {
-        Show-LanguageMenu
-    }
-} elseif (-not (Get-SavedLanguage)) {
-    Show-LanguageMenu
+if ($ResetLang -and (Test-Path $LANG_PREF_FILE)) {
+    Remove-Item $LANG_PREF_FILE -Force
 }
 
-if (-not $Silent) {
-    Clear-Host
+$isValidSetLang = $false
+if ($SetLang -and ($LANG_CODES -contains $SetLang)) {
+    $isValidSetLang = $true
 }
+
+if ($Silent) {
+    if ($isValidSetLang -and (Load-Language $SetLang)) {
+        $script:SELECTED_LANG = $SetLang
+        Save-LanguagePreference $SetLang
+    } elseif (-not (Get-SavedLanguage)) {
+        $detectedLang = Get-SystemLanguage
+        if (Load-Language $detectedLang) {
+            $script:SELECTED_LANG = $detectedLang
+            Save-LanguagePreference $detectedLang
+        } else {
+            Load-Language "en" | Out-Null
+            $script:SELECTED_LANG = "en"
+            Save-LanguagePreference "en"
+        }
+    }
+} else {
+    if ($ResetLang) {
+        Show-LanguageMenu
+    } elseif ($Lang -or $SetLang) {
+        if ($isValidSetLang -and (Load-Language $SetLang)) {
+            $script:SELECTED_LANG = $SetLang
+            Save-LanguagePreference $SetLang
+        } else {
+            Show-LanguageMenu
+        }
+    } elseif (-not (Get-SavedLanguage)) {
+        Show-LanguageMenu
+    }
+}
+
+if ($SetLang -and -not $isValidSetLang) {
+    Write-Log "Invalid language code requested via -SetLang: $SetLang" "WARN"
+    if (-not $Silent) {
+        Write-ColorOutput "Invalid language code '$SetLang'." "Yellow"
+    }
+}
+
+if (-not $Silent) { Clear-Host }
 
 # Architecture detection
 $ARCH = "x64"
@@ -771,6 +810,7 @@ Write-Host "   $DOWNLOAD_URL"
 
 if (-not (Invoke-Download -Url $DOWNLOAD_URL -OutFile $DOWNLOAD_PATH -ProxyUrl $ProxyUrl)) {
     Write-ColorOutput "$script:MSG_DOWNLOAD_FAILED" "Red"
+    Remove-TempDirectory
     if (-not $Silent) { Read-Host "Press Enter to exit" }
     exit 1
 }
@@ -780,7 +820,7 @@ Write-ColorOutput "$script:MSG_DOWNLOAD_COMPLETE" "Green"
 # Verify downloaded file
 if (-not (Test-DownloadedFile $DOWNLOAD_PATH)) {
     Write-ColorOutput "File verification failed" "Red"
-    Remove-Item -Path $TEMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-TempDirectory
     if (-not $Silent) { Read-Host "Press Enter to exit" }
     exit 1
 }
@@ -810,6 +850,7 @@ if ($fileExt -eq ".msi") {
     } catch {
         Write-ColorOutput "$script:MSG_EXTRACT_FAILED" "Red"
         Write-Log "Extraction failed: $_" "ERROR"
+        Remove-TempDirectory
         if (-not $Silent) { Read-Host "Press Enter to exit" }
         exit 1
     }
@@ -847,13 +888,20 @@ if ($fileExt -eq ".msi") {
     } else {
         Write-ColorOutput "$script:MSG_APP_NOT_FOUND" "Red"
         Write-Log "Application not found in archive" "ERROR"
+        Remove-TempDirectory
         if (-not $Silent) { Read-Host "Press Enter to exit" }
         exit 1
     }
+} else {
+    Write-ColorOutput "Unsupported installer file type: $fileExt" "Red"
+    Write-Log "Unsupported installer file type: $fileExt ($DOWNLOAD_NAME)" "ERROR"
+    Remove-TempDirectory
+    if (-not $Silent) { Read-Host "Press Enter to exit" }
+    exit 1
 }
 
 # Cleanup
-Remove-Item -Path $TEMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+Remove-TempDirectory
 
 # Success message
 Write-Host ""
