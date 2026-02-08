@@ -1,50 +1,72 @@
 # Antigravity Tools Updater
 
-Cross-platform updater scripts for [Antigravity Tools](https://github.com/lbjlaq/Antigravity-Manager).
+[Antigravity Tools](https://github.com/lbjlaq/Antigravity-Manager) için macOS, Windows, Linux ve Docker ortamlarında çalışan resmi olmayan güncelleme betikleri.
 
-This repository does **not** contain Antigravity Tools itself. It provides updaters that:
-- Check the latest release from `lbjlaq/Antigravity-Manager`
-- Compare with your installed/current version
-- Download and install/update with platform-specific logic
+> Bu depo **Antigravity Tools uygulamasını içermez**. Yalnızca güncelleyici (updater) araçlarını içerir.
 
 ![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux%20%7C%20Docker-blue)
 ![Updater Release](https://img.shields.io/badge/updater-1.4.3-green)
 ![Languages](https://img.shields.io/badge/languages-51-orange)
 ![License](https://img.shields.io/badge/license-MIT-brightgreen)
 
-## Releases
+## İçindekiler
 
-- Updater releases (this repo): https://github.com/ercanatay/AntigravityUpdater/releases
-- Antigravity Tools releases (upstream): https://github.com/lbjlaq/Antigravity-Manager/releases
+- [Ne İşe Yarar?](#ne-işe-yarar)
+- [Sürüm ve Yayınlar](#sürüm-ve-yayınlar)
+- [Hangi Güncelleyiciyi Kullanmalıyım?](#hangi-güncelleyiciyi-kullanmalıyım)
+- [Özellik Matrisi](#özellik-matrisi)
+- [Hızlı Başlangıç](#hızlı-başlangıç)
+- [Gereksinimler](#gereksinimler)
+- [Komut Referansı](#komut-referansı)
+- [Sık Kullanılan Senaryolar](#sık-kullanılan-senaryolar)
+- [Dil Desteği (51 Dil)](#dil-desteği-51-dil)
+- [Log Dosyaları](#log-dosyaları)
+- [Sorun Giderme](#sorun-giderme)
+- [Güvenlik Notları](#güvenlik-notları)
+- [Depo Yapısı](#depo-yapısı)
+- [Katkı](#katkı)
+- [Lisans](#lisans)
 
-> ℹ️ **Release note:** Merging a PR only updates this repository's code and version references.
-> To actually publish a downloadable updater version, also create a GitHub Release (tag format: `vX.Y.Z`).
+## Ne İşe Yarar?
 
-## Which Updater Should You Use?
+Bu depodaki güncelleyiciler:
 
-| Target | Script | What it updates |
+1. `lbjlaq/Antigravity-Manager` deposundaki en güncel sürümü kontrol eder.
+2. Mevcut kurulu sürüm ile karşılaştırır.
+3. Platforma uygun şekilde indirip günceller.
+
+## Sürüm ve Yayınlar
+
+- Bu depo (updater) yayınları: https://github.com/ercanatay/AntigravityUpdater/releases
+- Ana uygulama (upstream) yayınları: https://github.com/lbjlaq/Antigravity-Manager/releases
+
+> **Not:** Bir PR merge edilmesi sadece kodu günceller. İndirilebilir updater sürümü yayınlamak için ayrıca `vX.Y.Z` etiketi ile GitHub Release oluşturulmalıdır.
+
+## Hangi Güncelleyiciyi Kullanmalıyım?
+
+| Hedef | Komut | Güncellediği şey |
 |---|---|---|
-| macOS app install | `./antigravity-update.sh` | `/Applications/Antigravity Tools.app` |
-| Windows app install | `./windows/antigravity-update.ps1` (or `./windows/AntigravityUpdater.bat`) | Local Antigravity Tools installation |
-| Linux app install | `./linux/antigravity-update.sh` | `.deb`, `.rpm`, or `.AppImage` installation |
-| Docker deployment | `./docker/antigravity-docker-update.sh` | Docker image/tag and optional container recreate |
+| macOS uygulama kurulumu | `./antigravity-update.sh` | `/Applications/Antigravity Tools.app` |
+| Windows uygulama kurulumu | `./windows/antigravity-update.ps1` (veya `./windows/AntigravityUpdater.bat`) | Yerel Antigravity Tools kurulumu |
+| Linux uygulama kurulumu | `./linux/antigravity-update.sh` | `.deb`, `.rpm` veya `.AppImage` kurulumu |
+| Docker dağıtımı | `./docker/antigravity-docker-update.sh` | Docker image/tag güncellemesi ve isteğe bağlı container yeniden oluşturma |
 
-## Feature Matrix
+## Özellik Matrisi
 
-| Feature | macOS | Windows | Linux | Docker |
+| Özellik | macOS | Windows | Linux | Docker |
 |---|---|---|---|---|
-| 51-language UI | Yes | Yes | Yes | Yes |
-| Auto language detection | Yes | Yes | Yes | Yes |
-| Check-only mode | Yes | Yes | Yes | Yes |
-| Proxy support | Yes | Yes | Yes | Yes |
-| Silent mode | Yes | Yes | Yes | Yes |
-| Changelog display | Yes | Yes | Yes | Yes |
-| Backup before update | Yes | Yes | No | No |
-| Rollback | Yes | Yes | No | No |
-| Package-type selection | No | No | Yes | No |
-| Restart running service/container | App relaunch | App relaunch | App process stop | Optional container recreate |
+| 51 dil arayüzü | ✅ | ✅ | ✅ | ✅ |
+| Otomatik dil algılama | ✅ | ✅ | ✅ | ✅ |
+| Sadece kontrol modu | ✅ | ✅ | ✅ | ✅ |
+| Proxy desteği | ✅ | ✅ | ✅ | ✅ |
+| Sessiz mod | ✅ | ✅ | ✅ | ✅ |
+| Changelog gösterimi | ✅ | ✅ | ✅ | ✅ |
+| Güncelleme öncesi yedek | ✅ | ✅ | ❌ | ❌ |
+| Rollback | ✅ | ✅ | ❌ | ❌ |
+| Paket tipi seçimi | ❌ | ❌ | ✅ | ❌ |
+| Çalışan süreci yeniden başlatma | Uygulama yeniden açılır | Uygulama yeniden açılır | Süreç sonlandırılır | İsteğe bağlı container recreate |
 
-## Quick Start
+## Hızlı Başlangıç
 
 ### macOS
 
@@ -63,7 +85,7 @@ cd AntigravityUpdater\windows
 powershell -ExecutionPolicy Bypass -File .\antigravity-update.ps1
 ```
 
-Alternative launcher:
+Alternatif başlatıcı:
 
 ```powershell
 .\AntigravityUpdater.bat
@@ -87,100 +109,102 @@ chmod +x docker/antigravity-docker-update.sh
 ./docker/antigravity-docker-update.sh --check-only
 ```
 
-## Requirements
+## Gereksinimler
 
 ### macOS
 
 - macOS 10.15+
 - `curl`
-- Optional for update checks: `python3`
-- Write permission for `/Applications`
+- Güncelleme kontrolü için `python3`
+- `/Applications` altında yazma izni
 
 ### Windows
 
 - Windows 10/11 (64-bit)
 - PowerShell 5.1+
-- Internet access
+- İnternet erişimi
 
 ### Linux
 
 - Bash
 - `curl`
 - `python3`
-- For installation:
+- Kurulum için:
   - `.deb`: `apt-get`/`dpkg`
-  - `.rpm`: `dnf`, `yum`, `zypper`, or `rpm`
-  - `.AppImage`: no package manager required
+  - `.rpm`: `dnf`, `yum`, `zypper` veya `rpm`
+  - `.AppImage`: Paket yöneticisi gerekmez
 
-### Docker updater
+### Docker güncelleyici
 
 - `curl`
 - `python3`
-- Docker CLI (required for pull/restart; check-only still runs without Docker and reports latest target image)
+- Docker CLI (pull/restart için gerekli)
 
-## Command Reference
+> `--check-only` kullanımı Docker kurulu olmasa da en güncel hedef image bilgisini gösterebilir.
+
+## Komut Referansı
 
 ### macOS: `antigravity-update.sh`
 
 ```text
---lang, -l          Change language
---reset-lang        Reset language preference
---check-only        Check for updates only
---changelog         Show release notes before update
---rollback          Restore latest backup
---silent            Minimal output
---no-backup         Skip backup creation
---proxy URL         Use HTTP(S) proxy
---help, -h          Show help
+--lang, -l          Dil seçimi
+--reset-lang        Kayıtlı dil tercihini sıfırla
+--check-only        Sadece güncelleme kontrolü yap
+--changelog         Güncellemeden önce sürüm notlarını göster
+--rollback          Son yedekten geri dön
+--silent            Etkileşimi en aza indir
+--no-backup         Güncelleme öncesi yedek almayı atla
+--proxy URL         HTTP(S) proxy kullan
+--help, -h          Yardımı göster
 ```
 
 ### Windows: `windows/antigravity-update.ps1`
 
 ```text
--Lang               Change language
--ResetLang          Reset language preference
--SetLang <code>     Set language directly (example: tr, en, de)
--CheckOnly          Check for updates only
--ShowChangelog      Show release notes before update
--Rollback           Restore latest backup
--Silent             Minimal output
--NoBackup           Skip backup creation
--ProxyUrl <url>     Use proxy
--Help               Show help
+-Lang               Dil seçimi
+-ResetLang          Kayıtlı dil tercihini sıfırla
+-SetLang <code>     Dili doğrudan ayarla (ör. tr, en, de)
+-CheckOnly          Sadece güncelleme kontrolü yap
+-ShowChangelog      Güncellemeden önce sürüm notlarını göster
+-Rollback           Son yedekten geri dön
+-Silent             Etkileşimi en aza indir
+-NoBackup           Güncelleme öncesi yedek almayı atla
+-ProxyUrl <url>     Proxy kullan
+-Help               Yardımı göster
 ```
 
 ### Linux: `linux/antigravity-update.sh`
 
 ```text
---lang, -l          Change language
---reset-lang        Reset language preference
---check-only        Check for updates only
---changelog         Show release notes before update
---silent            Minimal output
---proxy URL         Use HTTP(S) proxy
+--lang, -l          Dil seçimi
+--reset-lang        Kayıtlı dil tercihini sıfırla
+--check-only        Sadece güncelleme kontrolü yap
+--changelog         Güncellemeden önce sürüm notlarını göster
+--silent            Etkileşimi en aza indir
+--proxy URL         HTTP(S) proxy kullan
 --format TYPE       auto | deb | rpm | appimage
---help, -h          Show help
+--help, -h          Yardımı göster
 ```
 
 ### Docker: `docker/antigravity-docker-update.sh`
 
 ```text
---lang, -l                   Change language
---reset-lang                 Reset language preference
---check-only                 Check status only
---changelog                  Show release notes before pull/restart
---restart-container          Recreate existing container with new image
---container-name NAME        Container name (default: antigravity-manager)
---image REPO                 Image repository (default: lbjlaq/antigravity-manager)
---tag TAG                    Override target tag (default: latest upstream release tag)
---proxy URL                  Use HTTP(S) proxy for GitHub API request
---silent                     Minimal output
---help, -h                   Show help
+--lang, -l                   Dil seçimi
+--reset-lang                 Kayıtlı dil tercihini sıfırla
+--check-only                 Sadece durum/güncelleme kontrolü
+--changelog                  Image çekmeden önce sürüm notlarını göster
+--restart-container          Mevcut container'ı yeni image ile yeniden oluştur
+--container-name NAME        Container adı (varsayılan: antigravity-manager)
+--image REPO                 Docker image deposu (varsayılan: lbjlaq/antigravity-manager)
+--tag TAG                    Hedef tag'i elle belirle (varsayılan: en güncel release tag)
+--proxy URL                  GitHub API istekleri için proxy
+--silent                     Etkileşimi en aza indir
+--help, -h                   Yardımı göster
 ```
 
-## Common Usage Examples
+## Sık Kullanılan Senaryolar
 
-### Check only (all platforms)
+### Tüm platformlarda sadece kontrol
 
 ```bash
 ./antigravity-update.sh --check-only
@@ -192,7 +216,7 @@ chmod +x docker/antigravity-docker-update.sh
 .\windows\antigravity-update.ps1 -CheckOnly
 ```
 
-### Force Linux package type
+### Linux'ta paket türünü zorlamak
 
 ```bash
 ./linux/antigravity-update.sh --format deb
@@ -200,7 +224,7 @@ chmod +x docker/antigravity-docker-update.sh
 ./linux/antigravity-update.sh --format appimage
 ```
 
-### Change language
+### Dil değiştirmek
 
 ```bash
 ./antigravity-update.sh --lang
@@ -213,101 +237,108 @@ chmod +x docker/antigravity-docker-update.sh
 .\windows\antigravity-update.ps1 -SetLang tr
 ```
 
-### Docker: pull and restart container
+### Docker image güncelle + container yeniden başlat
 
 ```bash
 ./docker/antigravity-docker-update.sh --restart-container --container-name antigravity-manager
 ```
 
-## Language Support (51)
+## Dil Desteği (51 Dil)
 
-Supported language codes:
+Desteklenen dil kodları:
 
 `en, tr, de, fr, es, it, pt, ru, zh, zh-TW, ja, ko, ar, nl, pl, sv, no, da, fi, uk, cs, hi, el, he, th, vi, id, ms, hu, ro, bg, hr, sr, sk, sl, lt, lv, et, ca, eu, gl, is, fa, sw, af, fil, bn, ta, ur, mi, cy`
 
-Language preference files:
+Dil tercihi dosyaları:
 
 - macOS: `~/.antigravity_updater_lang`
 - Windows: `%APPDATA%\antigravity_updater_lang.txt`
 - Linux: `~/.antigravity_updater_lang_linux`
-- Docker updater: `~/.antigravity_updater_lang_docker`
+- Docker: `~/.antigravity_updater_lang_docker`
 
-## Log Files
+## Log Dosyaları
 
 - macOS: `~/Library/Application Support/AntigravityUpdater/updater.log`
 - Windows: `%APPDATA%\AntigravityUpdater\updater.log`
 - Linux: `$XDG_STATE_HOME/AntigravityUpdater/updater.log` (fallback: `~/.local/state/AntigravityUpdater/updater.log`)
-- Docker updater: `$XDG_STATE_HOME/AntigravityUpdater/docker-updater.log` (fallback: `~/.local/state/AntigravityUpdater/docker-updater.log`)
+- Docker: `$XDG_STATE_HOME/AntigravityUpdater/docker-updater.log` (fallback: `~/.local/state/AntigravityUpdater/docker-updater.log`)
 
-## Troubleshooting
+## Sorun Giderme
 
-### GitHub API rate limit
+### 1) GitHub API rate limit
 
-Unauthenticated GitHub API requests are limited (commonly 60 requests/hour per IP).
-Wait and retry later if rate-limited.
+Kimlik doğrulamasız GitHub API kullanımında limit düşüktür (genellikle IP başına saatte 60 istek).
+Bir süre bekleyip tekrar deneyin.
 
-### Linux install requires privileges
+### 2) Linux kurulumunda yetki hatası
 
-Use a user with `sudo` capability for `.deb`/`.rpm` installation.
+`.deb` / `.rpm` kurulumunda `sudo` yetkili kullanıcı ile çalıştırın.
 
-### Linux package manager not found
+### 3) Linux paket yöneticisi bulunamıyor
 
-Use AppImage mode:
+AppImage modunu kullanın:
 
 ```bash
 ./linux/antigravity-update.sh --format appimage
 ```
 
-### Docker container is compose-managed
+### 4) Docker kurulumu compose ile yönetiliyor
 
-`--restart-container` is intended for `docker run` containers.
-For compose deployments, run this in your compose directory:
+`--restart-container` seçeneği daha çok `docker run` ile açılan container'lar içindir.
+Compose için ilgili dizinde şunları çalıştırın:
 
 ```bash
 docker compose pull
 docker compose up -d
 ```
 
-### Windows execution policy blocks script
+### 5) Windows execution policy script'i engelliyor
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\windows\antigravity-update.ps1
 ```
 
-### macOS permission issue
+### 6) macOS'ta çalıştırma izni hatası
 
 ```bash
 chmod +x antigravity-update.sh
 ```
 
-## Security Notes
+## Güvenlik Notları
 
-Current updaters include hardened locale loading, safer temp/log handling, pre-install code-signature verification with bundle identity checks, symlink rejection, and `ditto`-based app copying.
-Security-related details are tracked in `CHANGELOG.md`.
+Mevcut sürümde özellikle macOS tarafında güvenlik sertleştirmeleri bulunur:
 
-## Repository Layout
+- DMG içindeki kaynak uygulamada kurulum öncesi code-signature doğrulaması
+- Beklenen `CFBundleIdentifier` kontrolü
+- Symlink kaynak uygulama reddi
+- `cp -R` yerine `ditto` ile daha güvenli kopyalama/geri alma
+- Geçici dosya ve log yönetiminde ek sağlamlaştırmalar
+
+Detaylı güvenlik geçmişi için `CHANGELOG.md` dosyasına bakın.
+
+## Depo Yapısı
 
 ```text
 AntigravityUpdater/
-├── antigravity-update.sh                # macOS updater
-├── locales/                             # Shared locale files (.sh)
+├── antigravity-update.sh                # macOS güncelleyici
+├── locales/                             # Ortak locale dosyaları (.sh)
 ├── windows/
-│   ├── antigravity-update.ps1           # Windows updater
-│   ├── AntigravityUpdater.bat           # Windows launcher
-│   └── locales/                         # Windows locale files (.ps1)
+│   ├── antigravity-update.ps1           # Windows güncelleyici
+│   ├── AntigravityUpdater.bat           # Windows başlatıcı
+│   └── locales/                         # Windows locale dosyaları (.ps1)
 ├── linux/
-│   └── antigravity-update.sh            # Linux updater
+│   └── antigravity-update.sh            # Linux güncelleyici
 ├── docker/
-│   └── antigravity-docker-update.sh     # Docker updater
+│   └── antigravity-docker-update.sh     # Docker güncelleyici
 ├── CHANGELOG.md
 └── README.md
 ```
 
-## Contributing
+## Katkı
 
-- Open an issue or PR for bug fixes and improvements.
-- For localization updates, edit the relevant locale files and keep message keys consistent.
+- Hata düzeltmesi/iyileştirme için issue veya PR açabilirsiniz.
+- Çeviri katkılarında ilgili locale dosyalarını güncellerken anahtar adlarının tutarlı kalmasına dikkat edin.
 
-## License
+## Lisans
 
-MIT. See `LICENSE`.
+MIT. Detaylar için `LICENSE` dosyasına bakın.
