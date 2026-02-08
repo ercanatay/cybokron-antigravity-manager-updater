@@ -3,12 +3,12 @@
 
 # Antigravity Tools Updater - macOS Version
 # Supports 51 languages with automatic system language detection
-# Version 1.6.1 - Security Enhanced
+# Version 1.6.2 - Security Enhanced
 
 set -eo pipefail
 
 # Version
-UPDATER_VERSION="1.6.1"
+UPDATER_VERSION="1.6.2"
 
 # Colors
 RED='\033[0;31m'
@@ -949,7 +949,7 @@ fi
 # Check if update is needed
 # Only compare versions when current version looks like a valid version number;
 # otherwise (e.g. "Not installed", "Unknown") always proceed with the update.
-if [[ "$CURRENT_VERSION" =~ ^[0-9]+(\.[0-9]+)* ]]; then
+if [[ "$CURRENT_VERSION" =~ ^[0-9]+(\.[0-9]+)*$ ]]; then
     if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]] || ! version_gt "$LATEST_VERSION" "$CURRENT_VERSION"; then
         if [[ "$SILENT" != true ]]; then
             echo ""

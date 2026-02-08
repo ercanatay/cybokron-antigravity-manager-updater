@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.2] - 2026-02-08
+
+### Fixed
+- Tightened `CURRENT_VERSION` numeric validation in macOS, bundled `.app`, and Linux updaters by anchoring the regex end (`$`) before calling `version_gt`.
+- Prevented false numeric matches for values like `1.6.1+build`, which could previously trigger a silent parse failure and incorrect "already up to date" result.
+
+### Changed
+- Bumped updater metadata and badges to `1.6.2`.
+
 ## [1.6.1] - 2026-02-08
 
 ### Fixed

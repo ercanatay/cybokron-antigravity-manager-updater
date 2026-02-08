@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-UPDATER_VERSION="1.6.1"
+UPDATER_VERSION="1.6.2"
 REPO_OWNER="lbjlaq"
 REPO_NAME="Antigravity-Manager"
 APP_CMD_NAME="antigravity-tools"
@@ -813,7 +813,7 @@ main() {
 
     # Only compare versions when current version looks like a valid version number;
     # otherwise (e.g. "Not installed") always proceed with the update.
-    if [[ "$CURRENT_VERSION" =~ ^[0-9]+(\.[0-9]+)* ]]; then
+    if [[ "$CURRENT_VERSION" =~ ^[0-9]+(\.[0-9]+)*$ ]]; then
         if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]] || ! version_gt "$LATEST_VERSION" "$CURRENT_VERSION"; then
             print_msg "$MSG_ALREADY_LATEST"
             write_log "INFO" "Already on latest version (Current: $CURRENT_VERSION, Latest: $LATEST_VERSION)"
