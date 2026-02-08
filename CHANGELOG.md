@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-02-08
+
+### Fixed
+- Windows: Fixed broken automatic update scheduling — `$MyInvocation.MyCommand.Path` returns `$null` inside the `Set-AutoUpdateTask` function; replaced with `$PSCommandPath` ([#21 follow-up](https://github.com/ercanatay/AntigravityUpdater/pull/21))
+- Localization: Translated auto-update messages (`MSG_AUTO_UPDATE_ENABLED`, `MSG_AUTO_UPDATE_DISABLED`, `MSG_AUTO_UPDATE_INVALID_FREQ`, `MSG_AUTO_UPDATE_SUPPORTED`) in all 50 non-English locale files for both shell and PowerShell ([#21 follow-up](https://github.com/ercanatay/AntigravityUpdater/pull/21))
+
 ## [1.5.0] - 2026-02-08
 
 ### Added
