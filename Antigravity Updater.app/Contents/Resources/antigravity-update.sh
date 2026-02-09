@@ -8,7 +8,7 @@
 set -eo pipefail
 
 # Version
-UPDATER_VERSION="1.6.2"
+UPDATER_VERSION="1.6.3"
 
 # Colors
 RED='\033[0;31m'

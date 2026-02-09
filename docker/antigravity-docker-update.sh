@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-UPDATER_VERSION="1.6.2"
+UPDATER_VERSION="1.6.3"
 REPO_OWNER="lbjlaq"
 REPO_NAME="Antigravity-Manager"
 DEFAULT_IMAGE_REPO="lbjlaq/antigravity-manager"
@@ -283,9 +283,11 @@ fetch_latest_release_tag() {
         exit 1
     fi
 
-    # Optimization: Combine JSON parsing into a single python process
-    # Uses shlex.quote to safely escape strings for eval
-    eval "$(printf '%s' "$release_info" | python3 -c "import sys, json, shlex; data=json.load(sys.stdin); print(f'LATEST_RELEASE_TAG={shlex.quote(data.get(\"tag_name\") or \"\")}'); print(f'LATEST_RELEASE_BODY={shlex.quote(data.get(\"body\") or \"\")}')" 2>/dev/null || true)"
+    # Securely parse JSON without eval by separating fields with newlines
+    local RELEASE_DATA=$(printf '%s' "$release_info" | python3 -c "import sys, json; data=json.load(sys.stdin); print((data.get('tag_name') or '').lstrip('v')); print(data.get('body') or '')" 2>/dev/null || true)
+
+    local LATEST_RELEASE_TAG=$(echo "$RELEASE_DATA" | head -n1)
+    local LATEST_RELEASE_BODY=$(echo "$RELEASE_DATA" | tail -n+2)
 
     if [[ -z "$LATEST_RELEASE_TAG" ]]; then
         write_log "ERROR" "Could not parse tag_name from GitHub response"

@@ -216,3 +216,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Supported Platforms
 - macOS 10.15 (Catalina) or later
 - Apple Silicon (M1/M2/M3) and Intel Macs
+
+## [1.6.3] - 2024-05-22
+### Security
+- Fixed a potential Remote Code Execution (RCE) vulnerability in GitHub release parsing for macOS, Linux, and Docker updaters. The updaters now parse JSON response data directly into variables instead of `eval`-ing Python-generated assignments.
+- Scoped parsing variables as `local` in Linux and Docker updaters to prevent namespace pollution.
+- Unified version string parsing across all platforms to consistently strip leading `v` characters, ensuring accurate version comparisons.
