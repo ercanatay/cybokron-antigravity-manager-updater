@@ -3,12 +3,12 @@
 
 # Antigravity Tools Updater - macOS Version
 # Supports 51 languages with automatic system language detection
-# Version 1.6.2 - Security Enhanced
+# Version 1.6.3 - Security Enhanced
 
 set -eo pipefail
 
 # Version
-UPDATER_VERSION="1.6.2"
+UPDATER_VERSION="1.6.3"
 
 # Colors
 RED='\033[0;31m'
@@ -906,8 +906,8 @@ unset LATEST_VERSION RELEASE_BODY
 # Securely parse JSON without eval by separating fields with newlines
 RELEASE_DATA=$(printf '%s' "$RELEASE_INFO" | python3 -c "import sys, json; data=json.load(sys.stdin); print((data.get('tag_name') or '').lstrip('v')); print(data.get('body') or '')" 2>/dev/null || true)
 
-LATEST_VERSION=$(echo "$RELEASE_DATA" | head -n1)
-RELEASE_BODY=$(echo "$RELEASE_DATA" | tail -n+2)
+LATEST_VERSION=$(printf '%s\n' "$RELEASE_DATA" | head -n1)
+RELEASE_BODY=$(printf '%s\n' "$RELEASE_DATA" | tail -n+2)
 
 if [[ -z "$LATEST_VERSION" ]]; then
     write_log "ERROR" "Could not parse latest version from GitHub response"
