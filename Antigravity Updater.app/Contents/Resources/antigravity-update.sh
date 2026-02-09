@@ -3,7 +3,7 @@
 
 # Antigravity Tools Updater - macOS Version
 # Supports 51 languages with automatic system language detection
-# Version 1.6.3 - Security Enhanced
+# Version 1.6.2 - Security Enhanced
 
 set -eo pipefail
 
@@ -900,14 +900,21 @@ if [[ -z "$RELEASE_INFO" ]] || [[ "$RELEASE_INFO" == *"rate limit"* ]]; then
     exit 1
 fi
 
+# Optimization: Combine JSON parsing into a single python process to reduce startup overhead.
+# Uses shlex.quote to safely escape strings for eval.
 # Reset parsed values to avoid reusing any pre-existing environment or stale script values.
 unset LATEST_VERSION RELEASE_BODY
+PARSE_ASSIGNMENTS="$(echo "$RELEASE_INFO" | python3 -c "import sys, json, shlex; data=json.load(sys.stdin); print(f'LATEST_VERSION={shlex.quote(data.get(\"tag_name\", \"\").lstrip(\"v\"))}'); print(f'RELEASE_BODY={shlex.quote(data.get(\"body\", \"\"))}')" 2>/dev/null || echo "")"
 
-# Securely parse JSON without eval by separating fields with newlines
-RELEASE_DATA=$(printf '%s' "$RELEASE_INFO" | python3 -c "import sys, json; data=json.load(sys.stdin); print((data.get('tag_name') or '').lstrip('v')); print(data.get('body') or '')" 2>/dev/null || true)
+if [[ -z "$PARSE_ASSIGNMENTS" ]]; then
+    write_log "ERROR" "Failed to parse release information from GitHub response"
+    if [[ "$SILENT" != true ]]; then
+        echo -e "${RED}Error: Could not parse release information.${NC}"
+    fi
+    exit 1
+fi
 
-LATEST_VERSION=$(printf '%s\n' "$RELEASE_DATA" | head -n1)
-RELEASE_BODY=$(printf '%s\n' "$RELEASE_DATA" | tail -n+2)
+eval "$PARSE_ASSIGNMENTS"
 
 if [[ -z "$LATEST_VERSION" ]]; then
     write_log "ERROR" "Could not parse latest version from GitHub response"

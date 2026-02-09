@@ -268,7 +268,6 @@ require_prereqs() {
 fetch_latest_release_tag() {
     local curl_cmd
     local release_info
-    local RELEASE_DATA
 
     curl_cmd=(curl -sS -L -A "AntigravityDockerUpdater/$UPDATER_VERSION")
 
@@ -285,10 +284,10 @@ fetch_latest_release_tag() {
     fi
 
     # Securely parse JSON without eval by separating fields with newlines
-    RELEASE_DATA=$(printf '%s' "$release_info" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('tag_name') or ''); print(data.get('body') or '')" 2>/dev/null || true)
+    local RELEASE_DATA=$(printf '%s' "$release_info" | python3 -c "import sys, json; data=json.load(sys.stdin); print((data.get('tag_name') or '').lstrip('v')); print(data.get('body') or '')" 2>/dev/null || true)
 
-    LATEST_RELEASE_TAG=$(printf '%s\n' "$RELEASE_DATA" | head -n1)
-    LATEST_RELEASE_BODY=$(printf '%s\n' "$RELEASE_DATA" | tail -n+2)
+    local LATEST_RELEASE_TAG=$(echo "$RELEASE_DATA" | head -n1)
+    local LATEST_RELEASE_BODY=$(echo "$RELEASE_DATA" | tail -n+2)
 
     if [[ -z "$LATEST_RELEASE_TAG" ]]; then
         write_log "ERROR" "Could not parse tag_name from GitHub response"

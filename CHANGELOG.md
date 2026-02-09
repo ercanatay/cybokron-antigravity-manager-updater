@@ -7,18 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.6.3] - 2026-02-09
-
-### Fixed
-- Replaced `echo "$RELEASE_DATA"` field splitting with `printf '%s\n'` in macOS, Linux, and Docker updater parsing to avoid shell-dependent `echo` behavior.
-- Scoped release parsing scratch data (`RELEASE_DATA`) to local function scope in Linux and Docker updaters.
-- Applied the same no-`eval` release parsing flow to the bundled updater script at `Antigravity Updater.app/Contents/Resources/antigravity-update.sh`.
-- Removed the one-off `patch.py` helper from the repository.
-
-### Changed
-- Updated `README.md` security notes to document the parser hardening and bundled script sync.
-- Bumped updater metadata and badges to `1.6.3`.
-
 ## [1.6.2] - 2026-02-08
 
 ### Fixed
@@ -228,3 +216,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Supported Platforms
 - macOS 10.15 (Catalina) or later
 - Apple Silicon (M1/M2/M3) and Intel Macs
+
+## [1.6.3] - 2024-05-22
+### Security
+- Fixed a potential Remote Code Execution (RCE) vulnerability in GitHub release parsing for macOS, Linux, and Docker updaters. The updaters now parse JSON response data directly into variables instead of `eval`-ing Python-generated assignments.
+- Scoped parsing variables as `local` in Linux and Docker updaters to prevent namespace pollution.
+- Unified version string parsing across all platforms to consistently strip leading `v` characters, ensuring accurate version comparisons.
