@@ -5,7 +5,7 @@ Unofficial update scripts for [Antigravity Tools](https://github.com/lbjlaq/Anti
 > This repository **does not include the Antigravity Tools application**. It only includes updater tools.
 
 ![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux%20%7C%20Docker-blue)
-![Updater Release](https://img.shields.io/badge/updater-1.6.2-green)
+![Updater Release](https://img.shields.io/badge/updater-1.6.4-green)
 ![Languages](https://img.shields.io/badge/languages-51-orange)
 ![License](https://img.shields.io/badge/license-MIT-brightgreen)
 
@@ -214,7 +214,7 @@ chmod +x docker/antigravity-docker-update.sh
 --tag TAG                    Set target tag manually (default: latest release tag)
 --proxy URL                  Proxy for GitHub API requests
 --silent                     Minimize interaction
---enable-auto-update         Enable automatic update checks
+--enable-auto-update         Enable automatic update checks (Docker: pull image + attempt container restart)
 --disable-auto-update        Disable automatic update checks
 --auto-update-frequency VALUE
                             hourly | every3hours | every6hours | daily | weekly | monthly
@@ -225,7 +225,10 @@ chmod +x docker/antigravity-docker-update.sh
 
 ### Automatic Update Scheduling (English)
 
-All platform updaters now support optional automatic update checks. You can enable or disable this behavior and choose frequency:
+All platform updaters now support optional automatic update scheduling.  
+macOS, Windows, and Linux run full install flows automatically.  
+Docker pulls the target image and attempts automatic container restart for non-compose containers.
+You can enable or disable this behavior and choose frequency:
 
 - `hourly`
 - `every3hours`

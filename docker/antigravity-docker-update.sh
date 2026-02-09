@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-UPDATER_VERSION="1.6.3"
+UPDATER_VERSION="1.6.4"
 REPO_OWNER="lbjlaq"
 REPO_NAME="Antigravity-Manager"
 DEFAULT_IMAGE_REPO="lbjlaq/antigravity-manager"
@@ -108,7 +108,7 @@ Options:
   --tag TAG                    Override tag (default: latest GitHub release tag)
   --proxy URL                  Proxy for GitHub API requests
   --silent                     Run with minimal output
-  --enable-auto-update          Enable automatic update checks
+  --enable-auto-update          Enable automatic update checks (Docker: pulls image and attempts container restart)
   --disable-auto-update         Disable automatic update checks
   --auto-update-frequency VALUE hourly | every3hours | every6hours | daily | weekly | monthly
   --help, -h                   Show this help
@@ -488,17 +488,21 @@ restart_with_new_image() {
     local run_cmd
 
     if [[ "$CONTAINER_EXISTS" != true ]]; then
-        write_log "WARN" "--restart-container requested but container not found: $CONTAINER_NAME"
-        echo "ERROR: Container '$CONTAINER_NAME' was not found." >&2
-        exit 1
+        write_log "WARN" "--restart-container requested but container not found: $CONTAINER_NAME; skipping restart"
+        if [[ "$SILENT" != true ]]; then
+            echo "ERROR: Container '$CONTAINER_NAME' was not found." >&2
+        fi
+        return 2
     fi
 
     if is_compose_managed; then
-        write_log "ERROR" "Container appears to be docker-compose managed: $CONTAINER_NAME"
-        echo "ERROR: '$CONTAINER_NAME' appears to be managed by docker compose." >&2
-        echo "Run this in your compose directory instead:" >&2
-        echo "  docker compose pull && docker compose up -d" >&2
-        exit 1
+        write_log "WARN" "Container appears to be docker-compose managed: $CONTAINER_NAME; skipping automatic recreate"
+        if [[ "$SILENT" != true ]]; then
+            echo "ERROR: '$CONTAINER_NAME' appears to be managed by docker compose." >&2
+            echo "Run this in your compose directory instead:" >&2
+            echo "  docker compose pull && docker compose up -d" >&2
+        fi
+        return 3
     fi
 
     print_msg "WARNING: Restarting container copies existing environment variables."
@@ -510,7 +514,7 @@ restart_with_new_image() {
     if [[ -z "$run_cmd" ]]; then
         write_log "ERROR" "Failed to generate docker run command from container inspect"
         echo "ERROR: Failed to generate recreate command for '$CONTAINER_NAME'." >&2
-        exit 1
+        return 1
     fi
 
     write_log "INFO" "Recreate command generated for $CONTAINER_NAME"
@@ -526,10 +530,11 @@ restart_with_new_image() {
         write_log "ERROR" "Container recreate failed"
         echo "ERROR: Failed to recreate container. Run command manually:" >&2
         echo "$run_cmd" >&2
-        exit 1
+        return 1
     fi
 
     write_log "INFO" "Container restarted with image $TARGET_IMAGE"
+    return 0
 }
 
 run_check_only() {
@@ -605,7 +610,7 @@ Description=Antigravity Docker updater automatic update check
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/env bash $script_path --silent
+ExecStart=/usr/bin/env bash "$script_path" --silent --restart-container --container-name "$CONTAINER_NAME" --image "$IMAGE_REPO"
 EOF
 
     cat > "$timer_file" <<EOF
@@ -783,9 +788,25 @@ main() {
     pull_target_image
 
     if [[ "$RESTART_CONTAINER" == true ]]; then
-        restart_with_new_image
-        print_msg "$MSG_NEW_VERSION_LABEL: $TARGET_IMAGE"
-        print_msg "$MSG_UPDATE_SUCCESS"
+        if restart_with_new_image; then
+            print_msg "$MSG_NEW_VERSION_LABEL: $TARGET_IMAGE"
+            print_msg "$MSG_UPDATE_SUCCESS"
+        else
+            restart_rc=$?
+            if [[ "$restart_rc" -ne 2 && "$restart_rc" -ne 3 ]]; then
+                exit "$restart_rc"
+            fi
+
+            if [[ "$restart_rc" -eq 3 ]]; then
+                print_msg "$MSG_IMAGE_PULLED. Compose-managed container was not restarted automatically."
+                print_msg "Run in your compose directory: docker compose pull && docker compose up -d"
+            elif [[ "$CONTAINER_EXISTS" == true ]]; then
+                print_msg "$MSG_IMAGE_PULLED. To apply update to running container use:"
+                print_msg "  $0 --restart-container --container-name $CONTAINER_NAME --image $IMAGE_REPO --tag $TARGET_TAG"
+            else
+                print_msg "$MSG_IMAGE_PULLED. You can start a new container with your preferred docker run / compose setup."
+            fi
+        fi
     else
         if [[ "$CONTAINER_EXISTS" == true ]]; then
             print_msg "$MSG_IMAGE_PULLED. To apply update to running container use:"
