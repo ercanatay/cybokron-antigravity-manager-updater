@@ -5,7 +5,7 @@ Unofficial update scripts for [Antigravity Tools](https://github.com/lbjlaq/Anti
 > This repository **does not include the Antigravity Tools application**. It only includes updater tools.
 
 ![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux%20%7C%20Docker-blue)
-![Updater Release](https://img.shields.io/badge/updater-1.6.2-green)
+![Updater Release](https://img.shields.io/badge/updater-1.6.5-green)
 ![Languages](https://img.shields.io/badge/languages-51-orange)
 ![License](https://img.shields.io/badge/license-MIT-brightgreen)
 
@@ -357,6 +357,9 @@ The current version includes security hardening, especially on macOS:
 - Symlink source app rejection
 - Safer copy/restore using `ditto` instead of `cp -R`
 - Additional hardening for temporary file and log handling
+- GitHub release JSON parsing now avoids `eval` in shell updaters, including the bundled `.app` updater script
+- Linux and Docker release metadata parsing now preserves the shared version/tag variables used by update flow decisions
+- Docker release tag parsing now preserves upstream `v` prefixes so image tags resolve correctly
 
 For detailed security history, see `CHANGELOG.md`.
 

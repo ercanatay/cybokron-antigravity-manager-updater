@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.5] - 2026-02-10
+
+### Fixed
+- Linux updater now assigns parsed `LATEST_VERSION` and `RELEASE_BODY` to shared script variables after GitHub release parsing, restoring correct check/install decisions.
+- Docker updater now assigns parsed `LATEST_RELEASE_TAG` and `LATEST_RELEASE_BODY` to shared script variables, fixing empty tag/body values during checks and updates.
+- Docker updater now preserves GitHub release tag format (including `v` prefix) so generated image tags match published Docker tags.
+- Bundled macOS `.app` updater script now uses no-`eval` JSON parsing, matching the root macOS updater hardening.
+- Replaced `echo`-based release-data field splitting with `printf '%s\n'` in parser paths to avoid shell-dependent behavior.
+
+### Changed
+- Bumped updater metadata, installer metadata, app bundle metadata, and README badge to `1.6.5`.
+- Updated `README.md` security notes to document parser and release-tag fixes.
+
+### Removed
+- Removed accidental helper artifacts `apply_pr_changes.sh` and `patch.py`.
+
+## [1.6.4] - 2026-02-09
+
+### Added
+- Docker updater automatic-update timer now runs with `--restart-container` for non-compose containers.
+- Docker restart flow now degrades gracefully when the target container is missing or compose-managed, while still pulling the latest image.
+
+### Changed
+- Clarified Docker automatic update behavior in `README.md`.
+- Bumped updater metadata and README badge to `1.6.4`.
+
+## [1.6.3] - 2026-02-09
+
+### Security
+- Replaced `eval`-based GitHub release parsing in macOS, Linux, and Docker updaters with direct JSON field extraction.
+- Scoped release parsing scratch data in Linux and Docker updaters.
+
 ## [1.6.2] - 2026-02-08
 
 ### Fixed
@@ -216,9 +248,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Supported Platforms
 - macOS 10.15 (Catalina) or later
 - Apple Silicon (M1/M2/M3) and Intel Macs
-
-## [1.6.3] - 2024-05-22
-### Security
-- Fixed a potential Remote Code Execution (RCE) vulnerability in GitHub release parsing for macOS, Linux, and Docker updaters. The updaters now parse JSON response data directly into variables instead of `eval`-ing Python-generated assignments.
-- Scoped parsing variables as `local` in Linux and Docker updaters to prevent namespace pollution.
-- Unified version string parsing across all platforms to consistently strip leading `v` characters, ensuring accurate version comparisons.

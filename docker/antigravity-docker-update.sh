@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-UPDATER_VERSION="1.6.3"
+UPDATER_VERSION="1.6.5"
 REPO_OWNER="lbjlaq"
 REPO_NAME="Antigravity-Manager"
 DEFAULT_IMAGE_REPO="lbjlaq/antigravity-manager"
@@ -287,8 +287,8 @@ fetch_latest_release_tag() {
     local release_data
     release_data=$(printf '%s' "$release_info" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('tag_name') or ''); print(data.get('body') or '')" 2>/dev/null || true)
 
-    LATEST_RELEASE_TAG=$(echo "$release_data" | head -n1)
-    LATEST_RELEASE_BODY=$(echo "$release_data" | tail -n+2)
+    LATEST_RELEASE_TAG=$(printf '%s\n' "$release_data" | head -n1)
+    LATEST_RELEASE_BODY=$(printf '%s\n' "$release_data" | tail -n+2)
 
     if [[ -z "$LATEST_RELEASE_TAG" ]] || [[ "$LATEST_RELEASE_TAG" == "<no value>" ]]; then
         write_log "ERROR" "Could not parse tag_name from GitHub response"

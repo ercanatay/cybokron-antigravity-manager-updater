@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-UPDATER_VERSION="1.6.3"
+UPDATER_VERSION="1.6.5"
 REPO_OWNER="lbjlaq"
 REPO_NAME="Antigravity-Manager"
 APP_CMD_NAME="antigravity-tools"
@@ -367,8 +367,8 @@ fetch_release_info() {
     local release_data
     release_data=$(printf '%s' "$RELEASE_INFO" | python3 -c "import sys, json; data=json.load(sys.stdin); print((data.get('tag_name') or '').lstrip('v')); print(data.get('body') or '')" 2>/dev/null || true)
 
-    LATEST_VERSION=$(echo "$release_data" | head -n1)
-    RELEASE_BODY=$(echo "$release_data" | tail -n+2)
+    LATEST_VERSION=$(printf '%s\n' "$release_data" | head -n1)
+    RELEASE_BODY=$(printf '%s\n' "$release_data" | tail -n+2)
 
     if [[ -z "$LATEST_VERSION" ]]; then
         write_log "ERROR" "Could not parse latest version from GitHub response"
