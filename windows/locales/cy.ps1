@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Cymraeg"
 $script:LANG_CODE = "cy"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Gwirio fersiwn bresennol..."
 $script:MSG_CURRENT = "Presennol"
 $script:MSG_NOT_INSTALLED = "Heb ei osod"

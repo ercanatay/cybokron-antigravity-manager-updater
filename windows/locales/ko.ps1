@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Hangugeo"
 $script:LANG_CODE = "ko"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Hyeonjae beojeoneul hwaginhaneun jung..."
 $script:MSG_CURRENT = "Hyeonjae"
 $script:MSG_NOT_INSTALLED = "Seolchi andoem"

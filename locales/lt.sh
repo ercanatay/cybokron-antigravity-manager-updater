@@ -2,7 +2,7 @@
 LANG_NAME="Lietuvių"
 LANG_CODE="lt"
 
-MSG_TITLE="🚀 Antigravity Tools atnaujinimas"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager atnaujinimas"
 MSG_CHECKING_VERSION="📦 Tikrinama dabartinė versija..."
 MSG_CURRENT="Dabartinė"
 MSG_NOT_INSTALLED="Neįdiegta"

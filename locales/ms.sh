@@ -2,7 +2,7 @@
 LANG_NAME="Bahasa Melayu"
 LANG_CODE="ms"
 
-MSG_TITLE="🚀 Kemaskini Antigravity Tools"
+MSG_TITLE="🚀 Kemaskini Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 Menyemak versi semasa..."
 MSG_CURRENT="Semasa"
 MSG_NOT_INSTALLED="Belum dipasang"

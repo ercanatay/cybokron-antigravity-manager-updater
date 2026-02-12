@@ -2,7 +2,7 @@
 LANG_NAME="עברית"
 LANG_CODE="he"
 
-MSG_TITLE="🚀 עדכון Antigravity Tools"
+MSG_TITLE="🚀 עדכון Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 בודק גרסה נוכחית..."
 MSG_CURRENT="נוכחית"
 MSG_NOT_INSTALLED="לא מותקן"

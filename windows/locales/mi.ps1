@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Te Reo Maori"
 $script:LANG_CODE = "mi"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Te tirotiro i te putanga o naianei..."
 $script:MSG_CURRENT = "O naianei"
 $script:MSG_NOT_INSTALLED = "Kaore i whakauruhia"

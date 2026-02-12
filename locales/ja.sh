@@ -2,7 +2,7 @@
 LANG_NAME="日本語"
 LANG_CODE="ja"
 
-MSG_TITLE="🚀 Antigravity Tools アップデーター"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager アップデーター"
 MSG_CHECKING_VERSION="📦 現在のバージョンを確認中..."
 MSG_CURRENT="現在"
 MSG_NOT_INSTALLED="未インストール"

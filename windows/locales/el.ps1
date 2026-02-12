@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Ellinika"
 $script:LANG_CODE = "el"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Elegchos trechousas ekdosis..."
 $script:MSG_CURRENT = "Trechousa"
 $script:MSG_NOT_INSTALLED = "Den echi egkatastathei"

@@ -2,7 +2,7 @@
 LANG_NAME="اردو"
 LANG_CODE="ur"
 
-MSG_TITLE="🚀 Antigravity Tools اپڈیٹر"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager اپڈیٹر"
 MSG_CHECKING_VERSION="📦 موجودہ ورژن چیک ہو رہا ہے..."
 MSG_CURRENT="موجودہ"
 MSG_NOT_INSTALLED="انسٹال نہیں ہے"

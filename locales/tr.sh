@@ -2,7 +2,7 @@
 LANG_NAME="Türkçe"
 LANG_CODE="tr"
 
-MSG_TITLE="🚀 Antigravity Tools Güncelleyici"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager Güncelleyici"
 MSG_CHECKING_VERSION="📦 Mevcut sürüm kontrol ediliyor..."
 MSG_CURRENT="Mevcut"
 MSG_NOT_INSTALLED="Yüklü değil"

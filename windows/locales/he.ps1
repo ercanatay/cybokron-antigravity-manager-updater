@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Ivrit"
 $script:LANG_CODE = "he"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Bodek girsa nochekhit..."
 $script:MSG_CURRENT = "Nochekhit"
 $script:MSG_NOT_INSTALLED = "Lo mutkan"

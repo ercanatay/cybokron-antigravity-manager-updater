@@ -1,7 +1,7 @@
-# Antigravity Tools Updater - Windows Version
+# Cybokron AntiGravity Manager Updater - Windows Version
 # Supports Windows 10/11 64-bit (including Bootcamp)
 # Supports 51 languages with automatic system language detection
-# Version 1.6.6 - Security Enhanced
+# Version 1.6.7 - Rebranding Update
 
 param(
     [switch]$Lang,
@@ -24,7 +24,7 @@ param(
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Version
-$UPDATER_VERSION = "1.6.6"
+$UPDATER_VERSION = "1.6.7"
 
 # Settings
 $REPO_OWNER = "lbjlaq"
@@ -52,7 +52,7 @@ $LANG_CODES = @("en", "tr", "de", "fr", "es", "it", "pt", "ru", "zh", "zh-TW", "
 $LANG_NAMES = @("English", "Turkce", "Deutsch", "Francais", "Espanol", "Italiano", "Portugues", "Russkiy", "Zhongwen", "Zhongwen-TW", "Nihongo", "Hangugeo", "Arabiya", "Nederlands", "Polski", "Svenska", "Norsk", "Dansk", "Suomi", "Ukrayinska", "Cestina", "Hindi", "Ellinika", "Ivrit", "Thai", "Tieng Viet", "Bahasa Indonesia", "Bahasa Melayu", "Magyar", "Romana", "Balgarski", "Hrvatski", "Srpski", "Slovencina", "Slovenscina", "Lietuviu", "Latviesu", "Eesti", "Catala", "Euskara", "Galego", "Islenska", "Farsi", "Kiswahili", "Afrikaans", "Filipino", "Bangla", "Tamil", "Urdu", "Te Reo Maori", "Cymraeg")
 
 # Initialize message variables with defaults
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Checking current version..."
 $script:MSG_CURRENT = "Current"
 $script:MSG_NOT_INSTALLED = "Not installed"
@@ -683,7 +683,7 @@ function Invoke-Download {
 
 function Show-Help {
     Write-Host ""
-    Write-Host "Antigravity Tools Updater v$UPDATER_VERSION" -ForegroundColor Cyan
+    Write-Host "Cybokron AntiGravity Manager Updater v$UPDATER_VERSION" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "Usage: .\antigravity-update.ps1 [OPTIONS]"
     Write-Host ""

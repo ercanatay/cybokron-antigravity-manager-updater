@@ -2,7 +2,7 @@
 LANG_NAME="ไทย"
 LANG_CODE="th"
 
-MSG_TITLE="🚀 อัปเดต Antigravity Tools"
+MSG_TITLE="🚀 อัปเดต Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 กำลังตรวจสอบเวอร์ชันปัจจุบัน..."
 MSG_CURRENT="ปัจจุบัน"
 MSG_NOT_INSTALLED="ยังไม่ได้ติดตั้ง"

@@ -1,14 +1,14 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
-# Antigravity Tools Updater - macOS Version
+# Cybokron AntiGravity Manager Updater - macOS Version
 # Supports 51 languages with automatic system language detection
-# Version 1.6.6 - Security Enhanced
+# Version 1.6.7 - Rebranding Update
 
 set -eo pipefail
 
 # Version
-UPDATER_VERSION="1.6.6"
+UPDATER_VERSION="1.6.7"
 
 # Colors
 RED='\033[0;31m'
@@ -70,7 +70,7 @@ declare -a LANG_CODES=("en" "tr" "de" "fr" "es" "it" "pt" "ru" "zh" "zh-TW" "ja"
 declare -a LANG_NAMES=("English" "Türkçe" "Deutsch" "Français" "Español" "Italiano" "Português" "Русский" "简体中文" "繁體中文" "日本語" "한국어" "العربية" "Nederlands" "Polski" "Svenska" "Norsk" "Dansk" "Suomi" "Українська" "Čeština" "हिन्दी" "Ελληνικά" "עברית" "ไทย" "Tiếng Việt" "Bahasa Indonesia" "Bahasa Melayu" "Magyar" "Română" "Български" "Hrvatski" "Srpski" "Slovenčina" "Slovenščina" "Lietuvių" "Latviešu" "Eesti" "Català" "Euskara" "Galego" "Íslenska" "فارسی" "Kiswahili" "Afrikaans" "Filipino" "বাংলা" "தமிழ்" "اردو" "Te Reo Māori" "Cymraeg")
 
 # Default messages (overridden by locale files via source)
-MSG_TITLE="🚀 Antigravity Tools Updater"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager Updater"
 MSG_CHECKING_VERSION="📦 Checking current version..."
 MSG_CURRENT="Current"
 MSG_NOT_INSTALLED="Not installed"
@@ -631,7 +631,7 @@ PY
 
 # Print usage
 print_usage() {
-    echo "Antigravity Tools Updater v$UPDATER_VERSION"
+    echo "Cybokron AntiGravity Manager Updater v$UPDATER_VERSION"
     echo ""
     echo "Usage: $0 [OPTIONS]"
     echo ""

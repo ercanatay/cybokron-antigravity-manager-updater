@@ -2,7 +2,7 @@
 LANG_NAME="Cymraeg"
 LANG_CODE="cy"
 
-MSG_TITLE="🚀 Diweddarwr Antigravity Tools"
+MSG_TITLE="🚀 Diweddarwr Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 Gwirio'r fersiwn bresennol..."
 MSG_CURRENT="Presennol"
 MSG_NOT_INSTALLED="Heb ei osod"

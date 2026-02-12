@@ -2,7 +2,7 @@
 LANG_NAME="Filipino"
 LANG_CODE="fil"
 
-MSG_TITLE="🚀 Antigravity Tools Updater"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager Updater"
 MSG_CHECKING_VERSION="📦 Sinusuri ang kasalukuyang bersyon..."
 MSG_CURRENT="Kasalukuyan"
 MSG_NOT_INSTALLED="Hindi naka-install"

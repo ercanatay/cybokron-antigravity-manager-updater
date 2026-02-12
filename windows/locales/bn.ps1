@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Bangla"
 $script:LANG_CODE = "bn"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Bartaman version check hocche..."
 $script:MSG_CURRENT = "Bartaman"
 $script:MSG_NOT_INSTALLED = "Install kora hoyni"

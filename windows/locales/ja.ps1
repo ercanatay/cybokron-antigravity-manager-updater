@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Nihongo"
 $script:LANG_CODE = "ja"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Genzai no bajon wo kakunin chu..."
 $script:MSG_CURRENT = "Genzai"
 $script:MSG_NOT_INSTALLED = "Insutoru sarete imasen"

@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Latviesu"
 $script:LANG_CODE = "lv"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Parbauda pasreizejo versiju..."
 $script:MSG_CURRENT = "Pasreizeja"
 $script:MSG_NOT_INSTALLED = "Nav instaleta"

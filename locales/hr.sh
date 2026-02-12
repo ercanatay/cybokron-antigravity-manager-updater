@@ -2,7 +2,7 @@
 LANG_NAME="Hrvatski"
 LANG_CODE="hr"
 
-MSG_TITLE="🚀 Ažuriranje Antigravity Tools"
+MSG_TITLE="🚀 Ažuriranje Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 Provjera trenutne verzije..."
 MSG_CURRENT="Trenutna"
 MSG_NOT_INSTALLED="Nije instalirano"

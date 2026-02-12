@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Arabiya"
 $script:LANG_CODE = "ar"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Jari altahaqquq min alisdar alhalii..."
 $script:MSG_CURRENT = "Alhalii"
 $script:MSG_NOT_INSTALLED = "Ghayr muthabbat"

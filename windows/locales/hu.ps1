@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Magyar"
 $script:LANG_CODE = "hu"
 
-$script:MSG_TITLE = "Antigravity Tools Frissito"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Frissito"
 $script:MSG_CHECKING_VERSION = "Jelenlegi verzio ellenorzese..."
 $script:MSG_CURRENT = "Jelenlegi"
 $script:MSG_NOT_INSTALLED = "Nincs telepitve"

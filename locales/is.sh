@@ -2,7 +2,7 @@
 LANG_NAME="Íslenska"
 LANG_CODE="is"
 
-MSG_TITLE="🚀 Antigravity Tools uppfærsla"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager uppfærsla"
 MSG_CHECKING_VERSION="📦 Athuga núverandi útgáfu..."
 MSG_CURRENT="Núverandi"
 MSG_NOT_INSTALLED="Ekki uppsett"

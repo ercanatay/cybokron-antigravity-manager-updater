@@ -1,6 +1,6 @@
 # Windows Build Instructions
 
-This folder contains the Windows version of Antigravity Tools Updater.
+This folder contains the Windows version of Cybokron AntiGravity Manager Updater.
 
 ## Version 1.2.0 - Security Enhanced
 
@@ -90,7 +90,7 @@ To create the installer (.exe), you need [Inno Setup](https://jrsoftware.org/isi
 4. Click "Compile" or press Ctrl+F9
 5. The installer will be created in `../releases/`
 
-Output filename: `AntigravityToolsUpdater_1.2.0_x64-setup.exe`
+Output filename: `CybokronAntiGravityManagerUpdater_1.2.0_x64-setup.exe`
 
 ## File Structure
 

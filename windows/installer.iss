@@ -1,10 +1,10 @@
-; Antigravity Tools Updater - Inno Setup Script
+; Cybokron AntiGravity Manager Updater - Inno Setup Script
 ; Windows 10/11 64-bit Installer
 
-#define MyAppName "Antigravity Tools Updater"
-#define MyAppVersion "1.6.6"
+#define MyAppName "Cybokron AntiGravity Manager Updater"
+#define MyAppVersion "1.6.7"
 #define MyAppPublisher "Ercan ATAY"
-#define MyAppURL "https://github.com/ercanatay/AntigravityUpdater"
+#define MyAppURL "https://github.com/ercanatay/cybokron-antigravity-manager-updater"
 #define MyAppExeName "AntigravityUpdater.bat"
 
 [Setup]
@@ -20,7 +20,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=..\LICENSE
 OutputDir=..\releases
-OutputBaseFilename=AntigravityToolsUpdater_{#MyAppVersion}_x64-setup
+OutputBaseFilename=CybokronAntiGravityManagerUpdater_{#MyAppVersion}_x64-setup
 SetupIconFile=resources\icon.ico
 Compression=lzma2/ultra64
 SolidCompression=yes

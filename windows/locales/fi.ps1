@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Suomi"
 $script:LANG_CODE = "fi"
 
-$script:MSG_TITLE = "Antigravity Tools Paivitys"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Paivitys"
 $script:MSG_CHECKING_VERSION = "Tarkistetaan nykyinen versio..."
 $script:MSG_CURRENT = "Nykyinen"
 $script:MSG_NOT_INSTALLED = "Ei asennettu"

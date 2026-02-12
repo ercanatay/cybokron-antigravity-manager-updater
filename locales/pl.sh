@@ -2,7 +2,7 @@
 LANG_NAME="Polski"
 LANG_CODE="pl"
 
-MSG_TITLE="🚀 Aktualizator Antigravity Tools"
+MSG_TITLE="🚀 Aktualizator Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 Sprawdzanie bieżącej wersji..."
 MSG_CURRENT="Bieżąca"
 MSG_NOT_INSTALLED="Nie zainstalowano"

@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Balgarski"
 $script:LANG_CODE = "bg"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Proverka na tekushtata versiya..."
 $script:MSG_CURRENT = "Tekushta"
 $script:MSG_NOT_INSTALLED = "Ne e instaliran"

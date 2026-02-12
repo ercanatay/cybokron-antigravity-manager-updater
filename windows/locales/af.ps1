@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Afrikaans"
 $script:LANG_CODE = "af"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Kontroleer huidige weergawe..."
 $script:MSG_CURRENT = "Huidige"
 $script:MSG_NOT_INSTALLED = "Nie geinstalleer nie"

@@ -2,7 +2,7 @@
 LANG_NAME="Magyar"
 LANG_CODE="hu"
 
-MSG_TITLE="🚀 Antigravity Tools Frissítő"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager Frissítő"
 MSG_CHECKING_VERSION="📦 Jelenlegi verzió ellenőrzése..."
 MSG_CURRENT="Jelenlegi"
 MSG_NOT_INSTALLED="Nincs telepítve"

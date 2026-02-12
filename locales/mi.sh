@@ -2,7 +2,7 @@
 LANG_NAME="Te Reo Māori"
 LANG_CODE="mi"
 
-MSG_TITLE="🚀 Whakahōu Antigravity Tools"
+MSG_TITLE="🚀 Whakahōu Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 Te taki i te putanga o nāianei..."
 MSG_CURRENT="O nāianei"
 MSG_NOT_INSTALLED="Kāore i whakauruhia"

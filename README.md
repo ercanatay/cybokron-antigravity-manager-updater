@@ -1,11 +1,11 @@
-# Antigravity Tools Updater
+# Cybokron AntiGravity Manager Updater
 
 Unofficial update scripts for [Antigravity Tools](https://github.com/lbjlaq/Antigravity-Manager) that run on macOS, Windows, Linux, and Docker.
 
 > This repository **does not include the Antigravity Tools application**. It only includes updater tools.
 
 ![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux%20%7C%20Docker-blue)
-![Updater Release](https://img.shields.io/badge/updater-1.6.6-green)
+![Updater Release](https://img.shields.io/badge/updater-1.6.7-green)
 ![Languages](https://img.shields.io/badge/languages-51-orange)
 ![License](https://img.shields.io/badge/license-MIT-brightgreen)
 
@@ -39,7 +39,7 @@ The updaters in this repository:
 
 ## Versions and Releases
 
-- This repository's updater releases: https://github.com/ercanatay/AntigravityUpdater/releases
+- This repository's updater releases: https://github.com/ercanatay/cybokron-antigravity-manager-updater/releases
 - Main app (upstream) releases: https://github.com/lbjlaq/Antigravity-Manager/releases
 
 > **Note:** Merging a PR only updates the code. To publish a downloadable updater version, you must also create a GitHub Release with a `vX.Y.Z` tag.
@@ -58,8 +58,8 @@ Use this checklist before every updater release:
 Review date: **2026-02-11**
 
 - Open PRs: none.
-- PR [#27](https://github.com/ercanatay/AntigravityUpdater/pull/27): reviewed the Linux/Docker release parsing fixes and version alignment updates.
-- PR [#26](https://github.com/ercanatay/AntigravityUpdater/pull/26): reviewed critical `eval` removal and safer GitHub release parsing changes.
+- PR [#27](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/27): reviewed the Linux/Docker release parsing fixes and version alignment updates.
+- PR [#26](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/26): reviewed critical `eval` removal and safer GitHub release parsing changes.
 
 ## Which Updater Should I Use?
 
@@ -93,8 +93,8 @@ Review date: **2026-02-11**
 ### macOS
 
 ```bash
-git clone https://github.com/ercanatay/AntigravityUpdater.git
-cd AntigravityUpdater
+git clone https://github.com/ercanatay/cybokron-antigravity-manager-updater.git
+cd cybokron-antigravity-manager-updater
 chmod +x antigravity-update.sh
 ./antigravity-update.sh
 ```
@@ -102,8 +102,8 @@ chmod +x antigravity-update.sh
 ### Windows (PowerShell)
 
 ```powershell
-git clone https://github.com/ercanatay/AntigravityUpdater.git
-cd AntigravityUpdater\windows
+git clone https://github.com/ercanatay/cybokron-antigravity-manager-updater.git
+cd cybokron-antigravity-manager-updater\windows
 powershell -ExecutionPolicy Bypass -File .\antigravity-update.ps1
 ```
 
@@ -116,8 +116,8 @@ Alternative launcher:
 ### Linux
 
 ```bash
-git clone https://github.com/ercanatay/AntigravityUpdater.git
-cd AntigravityUpdater/linux
+git clone https://github.com/ercanatay/cybokron-antigravity-manager-updater.git
+cd cybokron-antigravity-manager-updater/linux
 chmod +x antigravity-update.sh
 ./antigravity-update.sh
 ```
@@ -125,8 +125,8 @@ chmod +x antigravity-update.sh
 ### Docker
 
 ```bash
-git clone https://github.com/ercanatay/AntigravityUpdater.git
-cd AntigravityUpdater
+git clone https://github.com/ercanatay/cybokron-antigravity-manager-updater.git
+cd cybokron-antigravity-manager-updater
 chmod +x docker/antigravity-docker-update.sh
 ./docker/antigravity-docker-update.sh --check-only
 ```
@@ -385,7 +385,7 @@ For detailed security history, see `CHANGELOG.md`.
 ## Repository Structure
 
 ```text
-AntigravityUpdater/
+cybokron-antigravity-manager-updater/
 ├── antigravity-update.sh                # macOS updater
 ├── locales/                             # Shared locale files (.sh)
 ├── windows/

@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Islenska"
 $script:LANG_CODE = "is"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Athuga nuverandi utg..."
 $script:MSG_CURRENT = "Nuverandi"
 $script:MSG_NOT_INSTALLED = "Ekki uppsett"

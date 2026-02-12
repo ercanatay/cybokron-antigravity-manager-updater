@@ -2,7 +2,7 @@
 LANG_NAME="Afrikaans"
 LANG_CODE="af"
 
-MSG_TITLE="🚀 Antigravity Tools Opdatering"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager Opdatering"
 MSG_CHECKING_VERSION="📦 Kontroleer huidige weergawe..."
 MSG_CURRENT="Huidige"
 MSG_NOT_INSTALLED="Nie geïnstalleer nie"

@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul 2>&1
-title Antigravity Tools Updater
+title Cybokron AntiGravity Manager Updater
 
 :: Check for PowerShell
 where powershell >nul 2>&1

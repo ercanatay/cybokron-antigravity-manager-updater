@@ -2,7 +2,7 @@
 LANG_NAME="Dansk"
 LANG_CODE="da"
 
-MSG_TITLE="🚀 Antigravity Tools Opdatering"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager Opdatering"
 MSG_CHECKING_VERSION="📦 Kontrollerer nuværende version..."
 MSG_CURRENT="Nuværende"
 MSG_NOT_INSTALLED="Ikke installeret"

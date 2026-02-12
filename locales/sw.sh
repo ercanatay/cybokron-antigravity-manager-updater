@@ -2,7 +2,7 @@
 LANG_NAME="Kiswahili"
 LANG_CODE="sw"
 
-MSG_TITLE="🚀 Usasishaji wa Antigravity Tools"
+MSG_TITLE="🚀 Usasishaji wa Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 Kuangalia toleo la sasa..."
 MSG_CURRENT="La sasa"
 MSG_NOT_INSTALLED="Haijasanikishwa"

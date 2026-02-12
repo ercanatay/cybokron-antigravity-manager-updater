@@ -2,7 +2,7 @@
 LANG_NAME="Eesti"
 LANG_CODE="et"
 
-MSG_TITLE="🚀 Antigravity Tools uuendaja"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager uuendaja"
 MSG_CHECKING_VERSION="📦 Praeguse versiooni kontrollimine..."
 MSG_CURRENT="Praegune"
 MSG_NOT_INSTALLED="Pole installitud"

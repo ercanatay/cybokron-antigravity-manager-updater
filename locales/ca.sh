@@ -2,7 +2,7 @@
 LANG_NAME="Català"
 LANG_CODE="ca"
 
-MSG_TITLE="🚀 Actualització d'Antigravity Tools"
+MSG_TITLE="🚀 Actualització d'Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 Comprovant la versió actual..."
 MSG_CURRENT="Actual"
 MSG_NOT_INSTALLED="No instal·lat"

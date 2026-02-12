@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Tieng Viet"
 $script:LANG_CODE = "vi"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Dang kiem tra phien ban hien tai..."
 $script:MSG_CURRENT = "Hien tai"
 $script:MSG_NOT_INSTALLED = "Chua cai dat"

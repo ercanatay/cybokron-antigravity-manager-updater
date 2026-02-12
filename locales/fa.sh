@@ -2,7 +2,7 @@
 LANG_NAME="فارسی"
 LANG_CODE="fa"
 
-MSG_TITLE="🚀 بروزرسانی Antigravity Tools"
+MSG_TITLE="🚀 بروزرسانی Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 بررسی نسخه فعلی..."
 MSG_CURRENT="فعلی"
 MSG_NOT_INSTALLED="نصب نشده"

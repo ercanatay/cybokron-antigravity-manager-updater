@@ -2,7 +2,7 @@
 LANG_NAME="한국어"
 LANG_CODE="ko"
 
-MSG_TITLE="🚀 Antigravity Tools 업데이터"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager 업데이터"
 MSG_CHECKING_VERSION="📦 현재 버전 확인 중..."
 MSG_CURRENT="현재"
 MSG_NOT_INSTALLED="설치되지 않음"

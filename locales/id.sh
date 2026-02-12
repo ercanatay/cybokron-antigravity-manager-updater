@@ -2,7 +2,7 @@
 LANG_NAME="Bahasa Indonesia"
 LANG_CODE="id"
 
-MSG_TITLE="🚀 Pembaruan Antigravity Tools"
+MSG_TITLE="🚀 Pembaruan Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 Memeriksa versi saat ini..."
 MSG_CURRENT="Saat ini"
 MSG_NOT_INSTALLED="Belum terpasang"

@@ -2,7 +2,7 @@
 LANG_NAME="Tiếng Việt"
 LANG_CODE="vi"
 
-MSG_TITLE="🚀 Cập nhật Antigravity Tools"
+MSG_TITLE="🚀 Cập nhật Cybokron AntiGravity Manager"
 MSG_CHECKING_VERSION="📦 Đang kiểm tra phiên bản hiện tại..."
 MSG_CURRENT="Hiện tại"
 MSG_NOT_INSTALLED="Chưa cài đặt"

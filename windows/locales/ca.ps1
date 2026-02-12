@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Catala"
 $script:LANG_CODE = "ca"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Comprovant versio actual..."
 $script:MSG_CURRENT = "Actual"
 $script:MSG_NOT_INSTALLED = "No instal·lat"

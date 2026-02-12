@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 
-# Antigravity Tools Docker Updater
+# Cybokron AntiGravity Manager Docker Updater
 # Pulls and optionally restarts a Docker deployment with the latest image tag.
 # Supports 51 languages with shared locale files.
 
 set -euo pipefail
 
-UPDATER_VERSION="1.6.6"
+UPDATER_VERSION="1.6.7"
 REPO_OWNER="lbjlaq"
 REPO_NAME="Antigravity-Manager"
 DEFAULT_IMAGE_REPO="lbjlaq/antigravity-manager"
@@ -48,7 +48,7 @@ declare -a LANG_CODES=("en" "tr" "de" "fr" "es" "it" "pt" "ru" "zh" "zh-TW" "ja"
 declare -a LANG_NAMES=("English" "Turkce" "Deutsch" "Francais" "Espanol" "Italiano" "Portugues" "Russkiy" "Zhongwen" "Zhongwen-TW" "Nihongo" "Hangugeo" "Arabiya" "Nederlands" "Polski" "Svenska" "Norsk" "Dansk" "Suomi" "Ukrayinska" "Cestina" "Hindi" "Ellinika" "Ivrit" "Thai" "Tieng Viet" "Bahasa Indonesia" "Bahasa Melayu" "Magyar" "Romana" "Balgarski" "Hrvatski" "Srpski" "Slovencina" "Slovenscina" "Lietuviu" "Latviesu" "Eesti" "Catala" "Euskara" "Galego" "Islenska" "Farsi" "Kiswahili" "Afrikaans" "Filipino" "Bangla" "Tamil" "Urdu" "Te Reo Maori" "Cymraeg")
 
 # Default messages (overridden by locale files via source)
-MSG_TITLE="Antigravity Tools Updater"
+MSG_TITLE="Cybokron AntiGravity Manager Updater"
 MSG_CHECKING_VERSION="Checking current version..."
 MSG_CURRENT="Current"
 MSG_NOT_INSTALLED="Not installed"
@@ -93,7 +93,7 @@ trap cleanup EXIT
 
 print_usage() {
     cat <<USAGE
-Antigravity Tools Docker Updater v$UPDATER_VERSION
+Cybokron AntiGravity Manager Docker Updater v$UPDATER_VERSION
 
 Usage: $0 [OPTIONS]
 

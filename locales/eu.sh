@@ -2,7 +2,7 @@
 LANG_NAME="Euskara"
 LANG_CODE="eu"
 
-MSG_TITLE="🚀 Antigravity Tools eguneratzailea"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager eguneratzailea"
 MSG_CHECKING_VERSION="📦 Uneko bertsioa egiaztatzen..."
 MSG_CURRENT="Unekoa"
 MSG_NOT_INSTALLED="Ez dago instalatuta"

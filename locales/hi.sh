@@ -2,7 +2,7 @@
 LANG_NAME="हिन्दी"
 LANG_CODE="hi"
 
-MSG_TITLE="🚀 Antigravity Tools अपडेटर"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager अपडेटर"
 MSG_CHECKING_VERSION="📦 वर्तमान संस्करण की जाँच हो रही है..."
 MSG_CURRENT="वर्तमान"
 MSG_NOT_INSTALLED="इंस्टॉल नहीं है"

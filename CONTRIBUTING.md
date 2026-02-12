@@ -1,4 +1,4 @@
-# Contributing to Antigravity Tools Updater
+# Contributing to Cybokron AntiGravity Manager Updater
 
 Thank you for your interest in contributing! This document provides guidelines for contributing to the project.
 
@@ -17,7 +17,7 @@ Thank you for your interest in contributing! This document provides guidelines f
    LANG_NAME="Your Language Name"
    LANG_CODE="xx"
 
-   MSG_TITLE="🚀 Antigravity Tools Updater"
+   MSG_TITLE="🚀 Cybokron AntiGravity Manager Updater"
    MSG_CHECKING_VERSION="📦 Checking current version..."
    # ... translate all other messages
    ```
@@ -71,7 +71,7 @@ Thank you for your interest in contributing! This document provides guidelines f
 LANG_NAME="Native Name"
 LANG_CODE="xx"
 
-MSG_TITLE="🚀 Antigravity Tools Updater"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager Updater"
 MSG_CHECKING_VERSION="📦 Checking current version..."
 MSG_CURRENT="Current"
 MSG_NOT_INSTALLED="Not installed"

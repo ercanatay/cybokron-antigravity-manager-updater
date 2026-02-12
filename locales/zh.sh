@@ -2,7 +2,7 @@
 LANG_NAME="简体中文"
 LANG_CODE="zh"
 
-MSG_TITLE="🚀 Antigravity Tools 更新程序"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager 更新程序"
 MSG_CHECKING_VERSION="📦 正在检查当前版本..."
 MSG_CURRENT="当前版本"
 MSG_NOT_INSTALLED="未安装"

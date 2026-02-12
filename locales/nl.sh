@@ -2,7 +2,7 @@
 LANG_NAME="Nederlands"
 LANG_CODE="nl"
 
-MSG_TITLE="🚀 Antigravity Tools Updater"
+MSG_TITLE="🚀 Cybokron AntiGravity Manager Updater"
 MSG_CHECKING_VERSION="📦 Huidige versie controleren..."
 MSG_CURRENT="Huidig"
 MSG_NOT_INSTALLED="Niet geïnstalleerd"

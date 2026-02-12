@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Urdu"
 $script:LANG_CODE = "ur"
 
-$script:MSG_TITLE = "Antigravity Tools Updater"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Updater"
 $script:MSG_CHECKING_VERSION = "Maujuda version check ho raha hai..."
 $script:MSG_CURRENT = "Maujuda"
 $script:MSG_NOT_INSTALLED = "Install nahi hai"

@@ -7,13 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.7] - 2026-02-12
+
+### Changed
+- Rebranded updater naming to `Cybokron AntiGravity Manager Updater` across macOS, Windows, Linux, Docker scripts, and locale titles.
+- Updated repository links and clone instructions from `ercanatay/AntigravityUpdater` to `ercanatay/cybokron-antigravity-manager-updater`.
+- Updated Windows installer metadata/output naming to `CybokronAntiGravityManagerUpdater_{version}_x64-setup`.
+- Bumped updater metadata, installer metadata, app bundle metadata, and README badge to `1.6.7`.
+
 ## [1.6.6] - 2026-02-11
 
 ### Added
 - Added `README.md` sections for release workflow and a PR review snapshot used before publishing releases.
 
 ### Changed
-- Reviewed latest merged PRs [#27](https://github.com/ercanatay/AntigravityUpdater/pull/27) and [#26](https://github.com/ercanatay/AntigravityUpdater/pull/26), and confirmed there were no open PRs before release.
+- Reviewed latest merged PRs [#27](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/27) and [#26](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/26), and confirmed there were no open PRs before release.
 - Bumped updater metadata, installer metadata, app bundle metadata, and README badge to `1.6.6`.
 
 ## [1.6.5] - 2026-02-10
@@ -103,24 +111,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.4.3] - 2026-02-07
 
 ### Added
-- Docker updater: `--changelog` flag to display GitHub release notes before pull/restart ([#5](https://github.com/ercanatay/AntigravityUpdater/pull/5))
+- Docker updater: `--changelog` flag to display GitHub release notes before pull/restart ([#5](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/5))
 
 ### Fixed
-- macOS: Add cleanup trap for temp directory to prevent leaks on unexpected exit ([#8](https://github.com/ercanatay/AntigravityUpdater/pull/8))
-- macOS: Add `--proxy` argument validation to prevent crash when URL is missing ([#8](https://github.com/ercanatay/AntigravityUpdater/pull/8))
-- macOS: Fix `.app` bundle locale path resolution ([#8](https://github.com/ercanatay/AntigravityUpdater/pull/8))
-- macOS: Fix unclosed box border characters in terminal UI ([#8](https://github.com/ercanatay/AntigravityUpdater/pull/8))
-- Linux: Replace overly broad `pkill -f` with `pkill -x` to prevent killing unrelated processes ([#8](https://github.com/ercanatay/AntigravityUpdater/pull/8))
+- macOS: Add cleanup trap for temp directory to prevent leaks on unexpected exit ([#8](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/8))
+- macOS: Add `--proxy` argument validation to prevent crash when URL is missing ([#8](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/8))
+- macOS: Fix `.app` bundle locale path resolution ([#8](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/8))
+- macOS: Fix unclosed box border characters in terminal UI ([#8](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/8))
+- Linux: Replace overly broad `pkill -f` with `pkill -x` to prevent killing unrelated processes ([#8](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/8))
 
 ### Changed
-- Optimized JSON parsing in macOS, Linux, and Docker scripts to use a single `python3` invocation instead of two ([#7](https://github.com/ercanatay/AntigravityUpdater/pull/7))
+- Optimized JSON parsing in macOS, Linux, and Docker scripts to use a single `python3` invocation instead of two ([#7](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/7))
 
 ### Security
-- macOS: Verify code signature on DMG source app **before** removing the existing installation; failure is now fatal ([#12](https://github.com/ercanatay/AntigravityUpdater/pull/12))
-- macOS: Reject symlinked source apps to prevent path traversal ([#12](https://github.com/ercanatay/AntigravityUpdater/pull/12))
-- macOS: `verify_codesign()` now checks `CFBundleIdentifier` matches expected bundle ID ([#12](https://github.com/ercanatay/AntigravityUpdater/pull/12))
-- macOS: Validate `LATEST_VERSION` format and guard against stale env values ([#12](https://github.com/ercanatay/AntigravityUpdater/pull/12))
-- macOS: Replaced `cp -R` with `ditto` for backup, restore, and install operations ([#12](https://github.com/ercanatay/AntigravityUpdater/pull/12))
+- macOS: Verify code signature on DMG source app **before** removing the existing installation; failure is now fatal ([#12](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/12))
+- macOS: Reject symlinked source apps to prevent path traversal ([#12](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/12))
+- macOS: `verify_codesign()` now checks `CFBundleIdentifier` matches expected bundle ID ([#12](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/12))
+- macOS: Validate `LATEST_VERSION` format and guard against stale env values ([#12](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/12))
+- macOS: Replaced `cp -R` with `ditto` for backup, restore, and install operations ([#12](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/12))
 - Bumped updater metadata and badges to `1.4.3`
 
 ## [1.4.2] - 2026-02-06
@@ -189,7 +197,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Now detects both `antigravity_tools.exe` (current naming) and `Antigravity Tools.exe` (legacy naming)
 
 ### Contributors
-- Thanks to [@nvtptest](https://github.com/nvtptest) for reporting and fixing this issue! ([#1](https://github.com/ercanatay/AntigravityUpdater/pull/1))
+- Thanks to [@nvtptest](https://github.com/nvtptest) for reporting and fixing this issue! ([#1](https://github.com/ercanatay/cybokron-antigravity-manager-updater/pull/1))
 
 ## [1.2.0] - 2026-01-30
 
@@ -238,7 +246,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 - Windows version uses PowerShell 5.1+ (included with Windows 10/11)
-- Installer output: `AntigravityToolsUpdater_x.x.x_x64-setup.exe`
+- Installer output: `CybokronAntiGravityManagerUpdater_x.x.x_x64-setup.exe`
 - No admin rights required for installation (installs to user directory)
 - Same 51-language support as macOS version
 

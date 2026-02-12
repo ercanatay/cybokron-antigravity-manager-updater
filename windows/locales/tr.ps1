@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Turkce"
 $script:LANG_CODE = "tr"
 
-$script:MSG_TITLE = "Antigravity Tools Guncelleyici"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Guncelleyici"
 $script:MSG_CHECKING_VERSION = "Mevcut surum kontrol ediliyor..."
 $script:MSG_CURRENT = "Mevcut"
 $script:MSG_NOT_INSTALLED = "Yuklu degil"

@@ -2,7 +2,7 @@
 $script:LANG_NAME = "Zhongwen"
 $script:LANG_CODE = "zh"
 
-$script:MSG_TITLE = "Antigravity Tools Gengxin Qi"
+$script:MSG_TITLE = "Cybokron AntiGravity Manager Gengxin Qi"
 $script:MSG_CHECKING_VERSION = "Zhengzai jiancha dangqian banben..."
 $script:MSG_CURRENT = "Dangqian"
 $script:MSG_NOT_INSTALLED = "Wei anzhuang"
